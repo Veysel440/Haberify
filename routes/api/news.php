@@ -1,0 +1,18 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NewsController;
+
+
+Route::get('/public-news',        [NewsController::class, 'index']);
+Route::get('/public-news/{id}',   [NewsController::class, 'show']);
+Route::get('/news-by-category/{categoryId}', [NewsController::class, 'byCategory']);
+Route::get('/news/popular',       [NewsController::class, 'popular']);
+Route::get('/news/featured',      [NewsController::class, 'featured']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/news/upload-image', [NewsController::class, 'uploadImage']);
+    Route::apiResource('news', NewsController::class)->except(['index', 'show']);
+});
