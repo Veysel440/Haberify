@@ -19,6 +19,7 @@ class NewsResource extends JsonResource
             'category' => new CategoryResource($this->whenLoaded('category')),
             'tags'     => TagResource::collection($this->whenLoaded('tags')),
             'created_at' => $this->created_at->toDateTimeString(),
+            'scheduled_at' => $this->scheduled_at ? $this->scheduled_at->toDateTimeString() : null,
         ];
     }
 }

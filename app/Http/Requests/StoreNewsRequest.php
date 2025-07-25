@@ -20,6 +20,7 @@ class StoreNewsRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
+            'scheduled_at' => 'nullable|date|after:now',
         ];
     }
 }

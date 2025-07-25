@@ -19,6 +19,7 @@ class UpdateNewsRequest extends FormRequest
             'content'     => 'sometimes|required|string',
             'image'       => 'nullable|string',
             'category_id' => 'sometimes|required|exists:categories,id',
+
         ];
     }
 }

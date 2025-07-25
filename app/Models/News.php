@@ -22,4 +22,8 @@ class News extends Model
     {
         return $this->belongsToMany(Tag::class, 'news_tag');
     }
+    public function histories()
+    {
+        return $this->hasMany(NewsHistory::class);
+    }
 }
