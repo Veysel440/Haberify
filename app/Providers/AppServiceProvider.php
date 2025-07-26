@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
             \App\Services\AdminServiceInterface::class   => \App\Services\AdminService::class,
             \App\Services\UserServiceInterface::class => \App\Services\UserService::class,
             \App\Services\CommentLikeServiceInterface::class  =>  \App\Services\CommentLikeService::class,
+            \App\Services\CommentReportServiceInterface::class => \App\Services\CommentReportService::class,
 
         ];
 

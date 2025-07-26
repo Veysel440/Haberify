@@ -16,6 +16,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'slug' => 'sometimes|required|string|max:255|unique:categories,slug,' . $this->route('category'),
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
         ];
     }
 }

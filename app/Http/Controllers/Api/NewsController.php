@@ -47,9 +47,21 @@ class NewsController extends Controller
     public function store(StoreNewsRequest $request)
     {
         try {
-            $news = $this->newsService->create($request->validated());
+            $data = $request->validated();
+
+            if ($request->hasFile('images')) {
+                $data['images'] = $request->file('images');
+            }
+
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image');
+            }
+
+            $news = $this->newsService->create($data);
+
             return ApiResponse::success(new NewsResource($news), "Haber eklendi", 201);
-        } catch (Exception $e) {
+
+        } catch (\Exception $e) {
             return ApiResponse::error("Haber eklenirken hata oluştu.", 500);
         }
     }
@@ -64,6 +76,15 @@ class NewsController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error("Haber güncellenirken hata oluştu.", 500);
         }
+    }
+    public function uploadGallery(Request $request, $newsId)
+    {
+        $request->validate([
+            'images'   => 'required|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+        ]);
+        $this->newsService->addImages($newsId, $request->file('images'));
+        return ApiResponse::success(null, 'Galeri görselleri başarıyla yüklendi.');
     }
 
     public function destroy($id)

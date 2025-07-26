@@ -21,6 +21,7 @@ class StoreNewsRequest extends FormRequest
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'scheduled_at' => 'nullable|date|after:now',
+            'video' => 'nullable|url|max:255',
         ];
     }
 }

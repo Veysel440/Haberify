@@ -15,11 +15,13 @@ class NewsResource extends JsonResource
             'slug'     => $this->slug,
             'excerpt'  => $this->excerpt,
             'content'  => $this->content,
-            'image'    => $this->image,
+            'image'     => $this->image ? url('storage/' . $this->image) : null,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'tags'     => TagResource::collection($this->whenLoaded('tags')),
             'created_at' => $this->created_at->toDateTimeString(),
             'scheduled_at' => $this->scheduled_at ? $this->scheduled_at->toDateTimeString() : null,
+            'gallery' => NewsImageResource::collection($this->whenLoaded('images')),
+            'video' => $this->video,
         ];
     }
 }

@@ -12,4 +12,6 @@ interface TagServiceInterface
     public function create(array $data): Tag;
     public function update(int $id, array $data): ?Tag;
     public function delete(int $id): bool;
+    public function trendingTags(int $limit = 10): \Illuminate\Support\Collection;
+    public function trendingTagsByDate($from, $to, int $limit = 10): \Illuminate\Support\Collection;
 }

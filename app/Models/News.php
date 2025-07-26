@@ -26,4 +26,8 @@ class News extends Model
     {
         return $this->hasMany(NewsHistory::class);
     }
+    public function images()
+    {
+        return $this->hasMany(NewsImage::class);
+    }
 }

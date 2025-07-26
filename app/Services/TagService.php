@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Tag;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Carbon\Carbon;
 
 class TagService implements TagServiceInterface
 {
@@ -34,5 +35,27 @@ class TagService implements TagServiceInterface
     {
         $tag = Tag::findOrFail($id);
         return $tag->delete();
+    }
+
+
+    public function trendingTags(int $limit = 10): \Illuminate\Support\Collection
+    {
+        return Tag::withCount('news')
+            ->orderByDesc('news_count')
+            ->take($limit)
+            ->get();
+    }
+
+    public function trendingTagsByDate($from, $to, int $limit = 10): \Illuminate\Support\Collection
+    {
+        return Tag::whereHas('news', function($query) use ($from, $to) {
+            $query->whereBetween('news.created_at', [$from, $to]);
+        })
+            ->withCount(['news' => function($query) use ($from, $to) {
+                $query->whereBetween('news.created_at', [$from, $to]);
+            }])
+            ->orderByDesc('news_count')
+            ->take($limit)
+            ->get();
     }
 }

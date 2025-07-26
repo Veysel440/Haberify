@@ -45,7 +45,14 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         try {
-            $category = $this->categoryService->create($request->validated());
+            $data = $request->validated();
+
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image');
+            }
+
+            $category = $this->categoryService->create($data);
+
             return ApiResponse::success(new CategoryResource($category), "Kategori eklendi", 201);
         } catch (Exception $e) {
             return ApiResponse::error("Kategori eklenemedi", 500);
@@ -55,7 +62,14 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, $id)
     {
         try {
-            $category = $this->categoryService->update($id, $request->validated());
+            $data = $request->validated();
+
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image');
+            }
+
+            $category = $this->categoryService->update($id, $data);
+
             return ApiResponse::success(new CategoryResource($category), "Kategori güncellendi");
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error("Kategori bulunamadı", 404);

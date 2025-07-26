@@ -10,6 +10,7 @@ use App\Services\TagServiceInterface;
 use App\Helpers\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
+use Illuminate\Support\Facades\Request;
 
 class TagController extends Controller
 {
@@ -62,6 +63,20 @@ class TagController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error("Etiket güncellenemedi", 500);
         }
+    }
+
+    public function trending()
+    {
+        $tags = $this->tagService->trendingTags(10);
+        return ApiResponse::success(TagResource::collection($tags), "Popüler etiketler");
+    }
+
+    public function trendingByDate(Request $request)
+    {
+        $from = $request->input('from', now()->subDays(7)->toDateString());
+        $to   = $request->input('to', now()->toDateString());
+        $tags = $this->tagService->trendingTagsByDate($from, $to, 10);
+        return ApiResponse::success(TagResource::collection($tags), "Döneme göre popüler etiketler");
     }
 
     public function destroy($id)

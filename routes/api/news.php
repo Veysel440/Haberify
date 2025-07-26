@@ -11,6 +11,8 @@ Route::get('/news-by-category/{categoryId}', [NewsController::class, 'byCategory
 Route::get('/news/popular',       [NewsController::class, 'popular']);
 Route::get('/news/featured',      [NewsController::class, 'featured']);
 Route::get('/news/{id}/history', [NewsHistoryController::class, 'index']);
+Route::post('/news/{id}/gallery', [NewsController::class, 'uploadGallery'])
+    ->middleware('auth:sanctum');
 
 
 Route::middleware('auth:sanctum')->group(function () {
