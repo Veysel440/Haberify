@@ -5,6 +5,34 @@ const api = axios.create({
     withCredentials: true,
 });
 
+export const sendResetLink = async (email: string) => {
+    await api.post("/password/email", { email });
+};
+
+export const resetPassword = async (data: {
+    email: string;
+    token: string;
+    password: string;
+    password_confirmation: string;
+}) => {
+    await api.post("/password/reset", data);
+};
+
+export const fetchProfile = async () => {
+    const res = await api.get("/profile");
+    return res.data.data;
+};
+
+export const updateProfile = async (data: { name: string; avatar?: File | null }) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    if (data.avatar) formData.append("avatar", data.avatar);
+
+    const res = await api.post("/profile", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
+    return res.data.data;
+};
 export const login = async (email: string, password: string) => {
     const res = await api.post("/login", { email, password });
     return res.data;
@@ -15,15 +43,6 @@ export const register = async (name: string, email: string, password: string) =>
     return res.data;
 };
 
-export const fetchProfile = async () => {
-    const res = await api.get("/profile");
-    return res.data;
-};
-
-export const updateProfile = async (data: { name: string }) => {
-    const res = await api.put("/profile", data);
-    return res.data;
-};
 
 export const logout = async () => {
     const res = await api.post("/logout");

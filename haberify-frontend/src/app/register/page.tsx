@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 export default function RegisterPage() {
     const [name, setName] = useState("");
@@ -29,14 +30,44 @@ export default function RegisterPage() {
         <div className="max-w-sm mx-auto bg-white p-8 rounded-xl shadow">
             <h2 className="text-2xl font-bold mb-4">Kayıt Ol</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input type="text" placeholder="Ad Soyad" className="w-full border p-2 rounded"
-                       value={name} onChange={e => setName(e.target.value)} required />
-                <input type="email" placeholder="E-posta" className="w-full border p-2 rounded"
-                       value={email} onChange={e => setEmail(e.target.value)} required />
-                <input type="password" placeholder="Şifre" className="w-full border p-2 rounded"
-                       value={password} onChange={e => setPassword(e.target.value)} required />
+                <input
+                    type="text"
+                    placeholder="Ad Soyad"
+                    className="w-full border p-2 rounded"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="E-posta"
+                    className="w-full border p-2 rounded"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Şifre"
+                    className="w-full border p-2 rounded"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                />
+                <div className="flex justify-between items-center">
+                    <Link
+                        href="/forgot-password"
+                        className="text-sm text-blue-600 hover:underline"
+                    >
+                        Şifremi Unuttum?
+                    </Link>
+                </div>
                 {error && <div className="text-red-500 text-sm">{error}</div>}
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded font-semibold" disabled={loading}>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white py-2 rounded font-semibold"
+                    disabled={loading}
+                >
                     {loading ? "Kayıt Olunuyor..." : "Kayıt Ol"}
                 </button>
             </form>

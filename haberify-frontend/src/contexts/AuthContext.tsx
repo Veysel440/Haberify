@@ -8,10 +8,12 @@ type User = {
     name: string;
     email: string;
     role?: string;
+    avatar_url?: string;
 };
 
 type AuthContextType = {
     user: User | null;
+    setUser: (user: User | null) => void;
     login: (email: string, password: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         authApi.fetchProfile()
             .then(data => setUser(data.user))
             .catch(() => setUser(null))
@@ -51,7 +54,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login: loginHandler, register: registerHandler, logout: logoutHandler, loading }}>
+        <AuthContext.Provider value={{
+            user,
+            setUser,
+            login: loginHandler,
+            register: registerHandler,
+            logout: logoutHandler,
+            loading,
+        }}>
             {children}
         </AuthContext.Provider>
     );
