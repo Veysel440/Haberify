@@ -19,3 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/news/upload-image', [NewsController::class, 'uploadImage']);
     Route::apiResource('news', NewsController::class)->except(['index', 'show']);
 });
+
+Route::get('/news/search', [NewsController::class, 'search']);
+Route::get('/news/{id}/meta', [NewsController::class, 'meta']);

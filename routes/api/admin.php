@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminStatsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 
@@ -13,3 +14,4 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('/users/{id}/suspend', [AdminController::class, 'suspendUser']);
     Route::post('/users/{id}/activate', [AdminController::class, 'activateUser']);
 });
+Route::middleware(['auth:sanctum', 'admin'])->get('/stats', [AdminStatsController::class, 'index']);

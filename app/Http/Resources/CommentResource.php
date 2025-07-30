@@ -17,6 +17,7 @@ class CommentResource extends JsonResource
             'replies'   => CommentResource::collection($this->whenLoaded('replies')),
             'created_at'=> $this->created_at->toDateTimeString(),
 
+
             'like_stats' => $this->whenLoaded('likes', function() {
                 return [
                     'likes'    => $this->likes->where('is_like', true)->count(),

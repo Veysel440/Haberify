@@ -4,20 +4,43 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const { notifications, reload } = useNotifications();
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    // Popup için state
     const [notifOpen, setNotifOpen] = useState(false);
+
+
+    const [q, setQ] = useState("");
+    const router = useRouter();
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!q.trim()) return;
+        router.push(`/search?q=${encodeURIComponent(q)}`);
+        setQ("");
+    };
 
     return (
         <nav className="bg-white shadow px-4 py-3 flex justify-between items-center">
             <div className="flex items-center gap-4">
                 <Link href="/" className="text-xl font-bold text-blue-600">Haberify</Link>
                 <Link href="/news" className="hover:text-blue-500 font-semibold">Haberler</Link>
+                {/* Arama kutusu */}
+                <form onSubmit={handleSearch} className="flex items-center gap-1 ml-4">
+                    <input
+                        value={q}
+                        onChange={e => setQ(e.target.value)}
+                        placeholder="Haber ara..."
+                        className="border rounded px-2 py-1 text-sm"
+                        style={{ width: 140 }}
+                    />
+                    <button type="submit" className="text-blue-500 text-sm px-2 py-1 rounded hover:bg-blue-100">
+                        Ara
+                    </button>
+                </form>
             </div>
             <div className="flex gap-4 items-center">
                 {user && (
@@ -33,7 +56,6 @@ export default function Navbar() {
                                 </span>
                             )}
                         </button>
-                        {/* Popup Bildirim Listesi */}
                         {notifOpen && (
                             <div className="absolute right-0 mt-2 w-72 max-h-80 overflow-y-auto bg-white border shadow-xl rounded-xl z-50">
                                 <div className="p-3 border-b font-semibold text-gray-700">Bildirimler</div>
@@ -44,7 +66,7 @@ export default function Navbar() {
                                     <div
                                         key={n.id}
                                         className={`px-4 py-3 border-b last:border-0 cursor-pointer ${n.read ? "bg-gray-50" : "bg-blue-50 font-semibold"}`}
-                                        {...(n.message ? { title: n.message } : {})}
+                                        title={n.message || ""}
                                     >
                                         <div className="text-sm">{n.title}</div>
                                         {n.message && <div className="text-xs text-gray-500 mt-1">{n.message}</div>}

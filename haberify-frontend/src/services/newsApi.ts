@@ -27,3 +27,18 @@ export const fetchNews = async (params?: { categoryId?: string | null, tagId?: s
     const res = await api.get(url);
     return res.data.data;
 };
+
+export const fetchNewsSearch = async (q: string) => {
+    const res = await api.get(`/news/search?q=${encodeURIComponent(q)}`);
+    return res.data.data;
+};
+
+export const fetchFavorites = async () => {
+    const res = await api.get("/favorites");
+    return res.data.data;
+};
+
+export const fetchHistory = async () => {
+    const res = await api.get("/history");
+    return res.data.data;
+};

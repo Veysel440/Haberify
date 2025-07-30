@@ -17,3 +17,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/comment-reports', [CommentReportController::class, 'index']);
     Route::delete('/comment-reports/{id}', [CommentReportController::class, 'destroy']);
 });
+Route::get('/comments/{id}/replies', [CommentController::class, 'replies']);

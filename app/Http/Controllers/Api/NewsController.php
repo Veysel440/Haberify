@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsResource;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
+use App\Models\News;
 use App\Services\NewsServiceInterface;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
@@ -42,6 +43,16 @@ class NewsController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error("Beklenmeyen bir hata oluştu.", 500);
         }
+    }
+    public function meta($id)
+    {
+        $news = News::findOrFail($id);
+        return response()->json([
+            'title' => $news->title,
+            'description' => $news->excerpt ?? \Str::limit(strip_tags($news->content), 150),
+            'image' => $news->image,
+            'url' => route('news.show', $news->id)
+        ]);
     }
 
     public function store(StoreNewsRequest $request)
@@ -85,6 +96,23 @@ class NewsController extends Controller
         ]);
         $this->newsService->addImages($newsId, $request->file('images'));
         return ApiResponse::success(null, 'Galeri görselleri başarıyla yüklendi.');
+    }
+
+    public function search(Request $request)
+    {
+        $q = $request->get('q');
+        $query = News::query();
+
+        if ($q) {
+            $query->where(function($sub) use ($q) {
+                $sub->where('title', 'like', "%$q%")
+                    ->orWhere('content', 'like', "%$q%");
+            });
+        }
+
+        $results = $query->latest()->take(20)->get();
+
+        return ApiResponse::success(NewsResource::collection($results), "Arama sonuçları");
     }
 
     public function destroy($id)

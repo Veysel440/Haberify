@@ -10,8 +10,12 @@ export const fetchComments = async (newsId: number) => {
     return res.data.data;
 };
 
-export const addComment = async (newsId: number, content: string) => {
-    const res = await api.post("/comments", { news_id: newsId, content });
+export const addComment = async (newsId: number, content: string, parentId?: number) => {
+    const res = await api.post("/comments", {
+        news_id: newsId,
+        content,
+        parent_id: parentId || null,
+    });
     return res.data.data;
 };
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
+use App\Models\Comment;
 use App\Services\CommentServiceInterface;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
@@ -57,6 +58,12 @@ class CommentController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error("Yorum getirilemedi.", 500);
         }
+    }
+
+    public function replies($commentId)
+    {
+        $comment = Comment::with('replies.user')->findOrFail($commentId);
+        return ApiResponse::success(CommentResource::collection($comment->replies), "Yanıtlar listelendi");
     }
 
 
