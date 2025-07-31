@@ -110,4 +110,16 @@ class AdminController extends Controller
             return ApiResponse::error("Aktifleştirme işlemi başarısız.", 500);
         }
     }
+
+    public function stats()
+    {
+        return response()->json([
+            'total_users'      => \App\Models\User::count(),
+            'total_news'       => \App\Models\News::count(),
+            'total_comments'   => \App\Models\Comment::count(),
+            'popular_news'     => \App\Models\News::orderByDesc('views')->take(5)->get(['id', 'title', 'views']),
+            'most_favorited'   => \App\Models\News::withCount('favorites')->orderByDesc('favorites_count')->take(5)->get(['id', 'title']),
+            'most_reported_comments' => \App\Models\Comment::withCount('reports')->orderByDesc('reports_count')->take(5)->get(['id', 'content']),
+        ]);
+    }
 }

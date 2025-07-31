@@ -48,3 +48,7 @@ export const logout = async () => {
     const res = await api.post("/logout");
     return res.data;
 };
+
+export const changePassword = async (payload: { old_password: string; new_password: string }) => {
+    await api.post("/profile/change-password", payload);
+};

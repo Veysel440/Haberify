@@ -1,134 +1,171 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { fetchNewsDetail } from "@/services/newsApi";
-import {
-    fetchComments,
-    addComment,
-    updateComment,
-    deleteComment,
-    reportComment
-} from "@/services/commentApi";
+import { fetchProfile, updateProfile, changePassword } from "@/services/authApi";
 import { useAuth } from "@/contexts/AuthContext";
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
-import VideoPlayer from "@/components/VideoPlayer";
-import CommentTree, { CommentType } from "@/components/CommentTree";
 
-type GalleryImage = { id: number; image: string };
-type Tag = { id: number; name: string };
-type Category = { id: number; name: string };
-type News = {
-    id: number;
-    title: string;
-    content: string;
-    image?: string | null;
-    gallery?: GalleryImage[];
-    video?: string | null;
-    category?: Category;
-    tags?: Tag[];
-};
+export default function ProfilePage() {
+    const { user, setUser } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [profile, setProfile] = useState<any>(null);
+    const [name, setName] = useState("");
+    const [avatar, setAvatar] = useState<File | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+    const [message, setMessage] = useState<{ text: string; error?: boolean }>({ text: "" });
+    const [updating, setUpdating] = useState(false);
 
-export default function NewsDetailPage() {
-    const { id } = useParams<{ id: string }>();
-    const [news, setNews] = useState<News | null>(null);
-    const [comments, setComments] = useState<CommentType[]>([]);
-    const [comment, setComment] = useState("");
-    const [error, setError] = useState("");
-    const { user } = useAuth();
-
-    // Yorumları getir
-    const getComments = () => {
-        fetchComments(Number(id)).then(setComments);
-    };
+    const [showPasswordForm, setShowPasswordForm] = useState(false);
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [passMsg, setPassMsg] = useState<{ text: string; error?: boolean }>({ text: "" });
+    const [passLoading, setPassLoading] = useState(false);
 
     useEffect(() => {
-        fetchNewsDetail(Number(id)).then(setNews);
-        getComments();
-    }, [id]);
+        fetchProfile().then(profile => {
+            setProfile(profile);
+            setName(profile.name || "");
+            setLoading(false);
+        });
+    }, []);
 
-    // Yeni yorum ekle
-    const handleAddComment = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-        if (!comment.trim()) return;
-        try {
-            await addComment(Number(id), comment);
-            setComment("");
-            getComments();
-        } catch {
-            setError("Yorum eklenemedi. Giriş yaptığınızdan emin olun.");
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setAvatar(e.target.files[0]);
+            setAvatarPreview(URL.createObjectURL(e.target.files[0]));
         }
     };
 
-    if (!news) return <div>Yükleniyor...</div>;
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setUpdating(true);
+        setMessage({ text: "" });
+        try {
+            const updated = await updateProfile({ name, avatar });
+            setProfile(updated);
+            setUser && setUser(updated);
+            setMessage({ text: "Profil başarıyla güncellendi!" });
+            setAvatar(null);
+            setAvatarPreview(null);
+        } catch {
+            setMessage({ text: "Profil güncellenemedi!", error: true });
+        } finally {
+            setUpdating(false);
+        }
+    };
+
+    const handlePasswordChange = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPassLoading(true);
+        setPassMsg({ text: "" });
+        try {
+            await changePassword({ old_password: oldPassword, new_password: newPassword });
+            setPassMsg({ text: "Şifre değiştirildi." });
+            setOldPassword(""); setNewPassword("");
+            setShowPasswordForm(false);
+        } catch (err: any) {
+            setPassMsg({ text: err?.response?.data?.message || "Şifre değiştirilemedi.", error: true });
+        } finally {
+            setPassLoading(false);
+        }
+    };
+
+    if (loading) return <div>Yükleniyor...</div>;
+    if (!profile) return <div>Profil bulunamadı!</div>;
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow">
-            {/* Kategori ve etiketler başlığın üstünde */}
-            <div className="mb-2 flex flex-wrap gap-2">
-                {news.category && (
-                    <span className="text-sm bg-gray-100 text-blue-600 px-2 py-1 rounded">
-                        {news.category.name}
-                    </span>
-                )}
-                {news.tags && news.tags.map((tag) => (
-                    <span key={tag.id} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                        #{tag.name}
-                    </span>
-                ))}
-            </div>
-            <h1 className="text-2xl font-bold mb-2">{news.title}</h1>
-            {/* Kapak fotoğrafı */}
-            {news.image && (
-                <img src={news.image} alt={news.title} className="rounded mb-4 max-h-72 w-full object-cover" />
-            )}
-            {/* Galeri */}
-            {news.gallery && news.gallery.length > 0 && (
-                <div className="mb-4">
-                    <ImageGallery
-                        items={news.gallery.map(img => ({
-                            original: img.image,
-                            thumbnail: img.image,
-                        }))}
-                        showFullscreenButton={true}
-                        showPlayButton={true}
-                        showBullets={true}
+        <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-8 rounded-xl shadow mt-8">
+            <h2 className="text-xl font-bold mb-4">Profilim</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block mb-2 font-medium">Adınız:</label>
+                    <input
+                        type="text"
+                        className="w-full border p-2 rounded"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        disabled={updating}
                     />
                 </div>
-            )}
-            {/* Video player */}
-            {news.video && <VideoPlayer url={news.video} />}
-
-            <div className="mb-4 text-gray-700">{news.content}</div>
-            <hr className="my-6" />
-            <h3 className="text-xl font-semibold mb-3">Yorumlar</h3>
-
-            {comments.length === 0 && <div>Henüz yorum yok.</div>}
-
-            <ul className="mb-6">
-                {/* Sadece en üst seviyedeki (parent olmayan) yorumları göster */}
-                {comments.filter(c => !c.parent_id).map((c) => (
-                    <CommentTree key={c.id} comment={c} depth={0} refresh={getComments} />
-                ))}
-            </ul>
-
-            {/* Yeni yorum ekleme */}
-            {user ? (
-                <form onSubmit={handleAddComment} className="flex gap-2">
+                <div>
+                    <label className="block mb-2 font-medium">E-mail:</label>
                     <input
-                        value={comment}
-                        onChange={e => setComment(e.target.value)}
-                        placeholder="Yorumunuzu yazın..."
-                        className="flex-1 border rounded px-3 py-2"
+                        type="email"
+                        className="w-full border p-2 rounded bg-gray-100"
+                        value={profile.email}
+                        disabled
                     />
-                    <button className="bg-blue-600 text-white px-4 rounded" type="submit">Ekle</button>
+                </div>
+                <div>
+                    <label className="block mb-2 font-medium">Profil Fotoğrafı:</label>
+                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                    <div className="flex gap-3 items-center mt-2">
+                        {/* Yeni seçilen fotoğraf önizlemesi */}
+                        {avatarPreview && (
+                            <img src={avatarPreview} alt="Yeni Profil" className="h-16 w-16 rounded-full object-cover border-2 border-blue-400" />
+                        )}
+                        {/* Sunucudaki mevcut fotoğraf */}
+                        {profile.avatar_url && !avatarPreview && (
+                            <img src={profile.avatar_url} alt="Profil Foto" className="h-16 w-16 rounded-full object-cover" />
+                        )}
+                    </div>
+                </div>
+                <button
+                    className="w-full bg-blue-600 text-white py-2 rounded font-semibold"
+                    type="submit"
+                    disabled={updating}
+                >
+                    {updating ? "Kaydediliyor..." : "Kaydet"}
+                </button>
+                {message.text && (
+                    <div className={`mt-2 text-center ${message.error ? "text-red-600" : "text-green-600"}`}>
+                        {message.text}
+                    </div>
+                )}
+            </form>
+            <hr className="my-8" />
+            {/* Şifre değiştir bölümü */}
+            <button
+                onClick={() => setShowPasswordForm(s => !s)}
+                className="w-full bg-gray-200 text-gray-800 py-2 rounded font-semibold mb-2"
+            >
+                {showPasswordForm ? "Şifre Değiştir'i Kapat" : "Şifre Değiştir"}
+            </button>
+            {showPasswordForm && (
+                <form onSubmit={handlePasswordChange} className="space-y-4 mt-2">
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Eski şifre"
+                            className="w-full border p-2 rounded"
+                            value={oldPassword}
+                            onChange={e => setOldPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Yeni şifre"
+                            className="w-full border p-2 rounded"
+                            value={newPassword}
+                            onChange={e => setNewPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-orange-600 text-white py-2 rounded font-semibold"
+                        disabled={passLoading}
+                    >
+                        {passLoading ? "Değiştiriliyor..." : "Şifreyi Değiştir"}
+                    </button>
+                    {passMsg.text && (
+                        <div className={`mt-2 text-center ${passMsg.error ? "text-red-600" : "text-green-600"}`}>
+                            {passMsg.text}
+                        </div>
+                    )}
                 </form>
-            ) : (
-                <div className="text-gray-600">Yorum eklemek için giriş yapınız.</div>
             )}
-            {error && <div className="text-red-500 mt-2">{error}</div>}
         </div>
     );
 }
