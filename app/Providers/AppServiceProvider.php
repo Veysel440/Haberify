@@ -4,25 +4,28 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Services\News\NewsService;
+use App\Services\Category\CategoryService;
+use App\Services\Comment\CommentService;
+use App\Services\Tag\TagService;
+use App\Services\Admin\AdminService;
+use App\Services\User\UserService;
+use App\Services\Comment\CommentLikeService;
+use App\Services\Comment\CommentReportService;
+
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $services = [
-            \App\Services\NewsServiceInterface::class    => \App\Services\NewsService::class,
-            \App\Services\CategoryServiceInterface::class=> \App\Services\CategoryService::class,
-            \App\Services\CommentServiceInterface::class => \App\Services\CommentService::class,
-            \App\Services\TagServiceInterface::class     => \App\Services\TagService::class,
-            \App\Services\AdminServiceInterface::class   => \App\Services\AdminService::class,
-            \App\Services\UserServiceInterface::class => \App\Services\UserService::class,
-            \App\Services\CommentLikeServiceInterface::class  =>  \App\Services\CommentLikeService::class,
-            \App\Services\CommentReportServiceInterface::class => \App\Services\CommentReportService::class,
+        $this->app->bind('news.service', NewsService::class);
+        $this->app->bind('category.service', CategoryService::class);
+        $this->app->bind('comment.service', CommentService::class);
+        $this->app->bind('tag.service', TagService::class);
+        $this->app->bind('admin.service', AdminService::class);
+        $this->app->bind('user.service', UserService::class);
+        $this->app->bind('comment_like.service', CommentLikeService::class);
+        $this->app->bind('comment_report.service', CommentReportService::class);
 
-        ];
-
-        foreach ($services as $interface => $implementation) {
-            $this->app->bind($interface, $implementation);
-        }
     }
 
     public function boot(): void

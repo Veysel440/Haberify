@@ -4,21 +4,45 @@ namespace App\Helpers;
 
 class ApiResponse
 {
-    public static function success($data = null, $message = '', $status = 200)
+    /**
+     * Başarılı response.
+     */
+    public static function success($data = null, string $message = 'Başarılı', int $status = 200)
     {
-        return response()->json([
+        $response = [
             'success' => true,
             'message' => $message,
-            'data'    => $data,
-        ], $status);
+        ];
+
+        if (!is_null($data)) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $status);
     }
 
-    public static function error($message = '', $status = 400, $data = null)
-    {
-        return response()->json([
+    /**
+     * Hatalı response.
+     */
+    public static function error(
+        string $message = 'Bir hata oluştu.',
+        int $status = 400,
+               $errors = null,
+               $data = null
+    ) {
+        $response = [
             'success' => false,
             'message' => $message,
-            'data'    => $data,
-        ], $status);
+        ];
+
+        if (!is_null($errors)) {
+            $response['errors'] = $errors;
+        }
+
+        if (!is_null($data)) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $status);
     }
 }
