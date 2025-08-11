@@ -1,32 +1,75 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Auth\ForgotPasswordController;
-use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Comment\CommentLikeController;
-use App\Http\Controllers\Api\Notification\NotificationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\{ArticleController,
+    CategoryController,
+    NotificationController,
+    TagController,
+    CommentController};
 
-require __DIR__ . '/api/news.php';
-require __DIR__ . '/api/comments.php';
-require __DIR__ . '/api/admin.php';
-require __DIR__ . '/api/categories.php';
-require __DIR__ . '/api/tags.php';
+Route::prefix('v1')->group(function () {
 
+    Route::get('notifications', [NotificationController::class,'index']);
+    Route::get('notifications/unread-count', [NotificationController::class,'unreadCount']);
+    Route::post('notifications/{id}/read', [NotificationController::class,'markAsRead']);
+    // Public
+    Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
+    Route::get('articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
-Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
+    Route::get('tags', [TagController::class, 'index'])->name('tags.index');
+    Route::get('tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/profile', [AuthController::class, 'profile']);
-    Route::put('/profile', [AuthController::class, 'updateProfile']);
+    Route::get('articles/{articleId}/comments', [CommentController::class, 'index'])
+        ->whereNumber('articleId')->name('comments.index');
+    Route::post('articles/{articleId}/comments', [CommentController::class, 'store'])
+        ->middleware('auth:sanctum')->whereNumber('articleId')->name('comments.store');
 
-    Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    // Authenticated + permissions
+    Route::middleware('auth:sanctum')->group(function () {
+        // Articles
+        Route::post('articles', [ArticleController::class, 'store'])
+            ->middleware('permission:articles.create')->name('articles.store');
 
-    Route::post('/comments/{id}/like', [CommentLikeController::class, 'like']);
+        Route::put('articles/{id}', [ArticleController::class, 'update'])
+            ->middleware('permission:articles.update')->whereNumber('id')->name('articles.update');
+
+        Route::post('articles/{id}/publish', [ArticleController::class, 'publish'])
+            ->middleware('permission:articles.publish')->whereNumber('id')->name('articles.publish');
+
+        Route::delete('articles/{id}', [ArticleController::class, 'destroy'])
+            ->middleware('permission:articles.delete')->whereNumber('id')->name('articles.destroy');
+
+        // Categories
+        Route::post('categories', [CategoryController::class, 'store'])
+            ->middleware('permission:categories.manage')->name('categories.store');
+
+        Route::put('categories/{id}', [CategoryController::class, 'update'])
+            ->middleware('permission:categories.manage')->whereNumber('id')->name('categories.update');
+
+        Route::delete('categories/{id}', [CategoryController::class, 'destroy'])
+            ->middleware('permission:categories.manage')->whereNumber('id')->name('categories.destroy');
+
+        // Tags
+        Route::post('tags', [TagController::class, 'store'])
+            ->middleware('permission:tags.manage')->name('tags.store');
+
+        Route::put('tags/{id}', [TagController::class, 'update'])
+            ->middleware('permission:tags.manage')->whereNumber('id')->name('tags.update');
+
+        Route::delete('tags/{id}', [TagController::class, 'destroy'])
+            ->middleware('permission:tags.manage')->whereNumber('id')->name('tags.destroy');
+
+        // Comments moderation
+        Route::post('comments/{id}/approve', [CommentController::class, 'approve'])
+            ->middleware('permission:comments.moderate')->whereNumber('id')->name('comments.approve');
+
+        Route::post('comments/{id}/reject', [CommentController::class, 'reject'])
+            ->middleware('permission:comments.moderate')->whereNumber('id')->name('comments.reject');
+
+        Route::delete('comments/{id}', [CommentController::class, 'destroy'])
+            ->middleware('permission:comments.moderate')->whereNumber('id')->name('comments.destroy');
+    });
 });

@@ -1,44 +1,12 @@
 <?php
 
 namespace App\Policies;
-use App\Models\Comment;
-use App\Models\User;
+
+use App\Models\{User, Comment};
 
 class CommentPolicy
 {
-    public function viewAny(User $user): bool
-    {
-        return true;
-    }
-
-    public function view(User $user, Comment $comment): bool
-    {
-        return true;
-    }
-
-    public function create(User $user): bool
-    {
-        return $user->status === 'active';
-    }
-
-    public function update(User $user, Comment $comment): bool
-    {
-        return $user->id === $comment->user_id || $user->role === 'admin';
-    }
-
-
-    public function delete(User $user, Comment $comment): bool
-    {
-        return $user->id === $comment->user_id || $user->role === 'admin';
-    }
-
-    public function restore(User $user, Comment $comment): bool
-    {
-        return $user->role === 'admin';
-    }
-
-    public function forceDelete(User $user, Comment $comment): bool
-    {
-        return $user->role === 'admin';
-    }
+    public function moderate(User $u): bool { return $u->can('comments.moderate'); }
+    public function delete(User $u, Comment $c): bool
+    { return $u->can('comments.moderate') || $u->id === $c->user_id; }
 }

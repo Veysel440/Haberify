@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name','slug','is_active'];
 
-    public function news()
-    {
-        return $this->belongsToMany(News::class, 'news_tag');
-    }
+    public function articles(){ return $this->belongsToMany(Article::class); }
+
+    public function setSlugAttribute($v){ $this->attributes['slug'] = $v ?: \Str::slug($this->attributes['name'] ?? ''); }
 }
