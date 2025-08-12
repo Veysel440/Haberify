@@ -6,12 +6,13 @@ class Handler
 {
     public function register(): void
     {
-        $this->renderable(function (\App\Exceptions\ApiException $e, $request) {
-            if ($request->is('api/*')) {
+        $this->renderable(function (\Throwable $e, $request) {
+            if ($request->expectsJson()) {
+                $code = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
                 return response()->json([
-                    'status' => 'error',
-                    'message' => $e->getMessage(),
-                ], $e->getCode() ?: 400);
+                    'status'  => 'error',
+                    'message' => $e->getMessage() ?: 'Server Error',
+                ], $code);
             }
         });
     }

@@ -17,32 +17,31 @@ class ArticleService
     public function findBySlug(string $slug): ?Article
     { return $this->repo->findBySlug($slug); }
 
-    public function create(array $data): Article
-    {
-        return DB::transaction(function() use ($data){
+    public function create(array $data): Article {
+        return \DB::transaction(function() use ($data){
             $data['reading_time'] = $data['reading_time'] ?? $this->estimate($data['body'] ?? '');
-            /** @var Article $a */
             $a = $this->repo->create($data);
             if (!empty($data['tag_ids'])) $a->tags()->sync($data['tag_ids']);
+            if ($a->status === 'published') $a->searchable();
             return $a->load(['category','tags','author']);
         });
     }
 
-    public function update(int $id, array $data): Article
-    {
+    public function update(int $id, array $data): Article {
         $a = $this->repo->findById($id) ?? abort(404,'Article not found');
-        return DB::transaction(function() use ($a,$data){
+        return \DB::transaction(function() use ($a,$data){
             $a = $this->repo->update($a,$data);
             if (array_key_exists('tag_ids',$data)) $a->tags()->sync($data['tag_ids'] ?? []);
+            if ($a->status === 'published') $a->searchable(); else $a->unsearchable();
             return $a->load(['category','tags','author']);
         });
     }
 
-    public function publish(int $id): \App\Models\Article
-    {
+    public function publish(int $id): Article {
         $a = $this->repo->findById($id) ?? abort(404);
         $a = $this->repo->update($a, ['status'=>'published','published_at'=>now()]);
-        event(new ArticlePublished($a));
+        $a->searchable();
+        \Cache::forget('rss:latest'); \Cache::forget('sitemap:xml');
         return $a->load(['category','tags','author']);
     }
 

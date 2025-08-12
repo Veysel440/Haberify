@@ -24,6 +24,7 @@ class ArticleController extends Controller
     public function show(string $slug)
     {
         $a = $this->svc->findBySlug($slug) ?? abort(404);
+        request()->attributes->set('article_id', $a->id);
         return new ArticleResource($a->load(['category','tags','author']));
     }
 
