@@ -50,8 +50,12 @@ class AnalyticsController extends Controller
         $days = match(request('range','7d')){ '30d'=>30, '90d'=>90, default=>7 };
         $from = now()->subDays($days)->toDateString();
 
-        $list = DB::table('visits')
-            ->selectRaw('COALESCE(ref,"direct") ref, COUNT(*) c')
+        if (!\Schema::hasTable('visits')) {
+            return response()->json(['data'=>[]]);
+        }
+
+        $list = \DB::table('visits')
+            ->selectRaw('COALESCE(NULLIF(ref,""),"direct") as ref, COUNT(*) c')
             ->whereDate('created_at','>=',$from)
             ->groupBy('ref')->orderByDesc('c')->limit(20)->get();
 

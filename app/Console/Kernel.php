@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('articles:publish-scheduled')->everyMinute()->withoutOverlapping();
         $schedule->command('analytics:rollup')->hourly();
         $schedule->command('mail:weekly-digest')->weeklyOn(1, '08:00');
     }

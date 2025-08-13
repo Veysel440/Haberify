@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Services\ArticleService;
-use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
+use App\Http\Requests\Api\V1\Article\{StoreArticleRequest, UpdateArticleRequest};
 use App\Http\Resources\Api\V1\{ArticleResource, ArticleCollection};
+use App\DTO\Article\{CreateArticleData, UpdateArticleData};
+use App\Http\Responses\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -17,42 +19,42 @@ class ArticleController extends Controller
 
     public function index(Request $r)
     {
-        $list = $this->svc->list($r->all(), $r->integer('per_page',15));
-        return new ArticleCollection($list);
+        $list = $this->svc->list($r->all(), per_page($r));
+        return ApiResponse::ok((new ArticleCollection($list))->toArray($r));
     }
 
     public function show(string $slug)
     {
         $a = $this->svc->findBySlug($slug) ?? abort(404);
         request()->attributes->set('article_id', $a->id);
-        return new ArticleResource($a->load(['category','tags','author']));
+        return ApiResponse::ok((new ArticleResource($a->load(['category','tags','author'])))->toArray(request()));
     }
 
     public function store(StoreArticleRequest $r)
     {
-        $data = $r->validated() + [
+        $v = $r->validated() + [
                 'author_id'=>$r->user()->id,
-                'slug'=>$r->input('slug') ?: \Str::slug($r->title),
+                'slug'=> $r->input('slug') ?: Str::slug($r->title),
             ];
-        $a = $this->svc->create($data);
-        return (new ArticleResource($a))->response()->setStatusCode(201);
+        $a = $this->svc->create(CreateArticleData::from($v));
+        return ApiResponse::created((new ArticleResource($a))->toArray($r));
     }
 
     public function update(int $id, UpdateArticleRequest $r)
     {
-        $a = $this->svc->update($id, $r->validated());
-        return new ArticleResource($a);
+        $a = $this->svc->update($id, UpdateArticleData::from($r->validated()));
+        return ApiResponse::ok((new ArticleResource($a))->toArray($r));
     }
 
     public function publish(int $id)
     {
         $a = $this->svc->publish($id);
-        return new ArticleResource($a);
+        return ApiResponse::ok((new ArticleResource($a))->toArray(request()));
     }
 
     public function destroy(int $id)
     {
         $this->svc->delete($id);
-        return response()->noContent();
+        return ApiResponse::noContent();
     }
 }

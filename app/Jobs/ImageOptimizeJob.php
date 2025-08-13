@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -16,32 +18,44 @@ class ImageOptimizeJob implements ShouldQueue
         public string $path,
         public string $disk = 'public',
         public bool $keepOriginal = true,
-        public array $widths = [1200,800,400]
+        /** @var int[] */
+        public array $widths = [1200, 800, 400]
     ) {}
 
     public function handle(): void
     {
         $fs = Storage::disk($this->disk);
-        if (!$fs->exists($this->path)) return;
+        if (!$fs->exists($this->path)) {
+            Log::warning('image.path.missing', ['path'=>$this->path,'disk'=>$this->disk]);
+            return;
+        }
 
         $manager = new ImageManager(['driver' => 'gd']);
 
         $data = $fs->get($this->path);
         $image = $manager->read($data);
 
-        // WebP
         $webp = $image->toWebp(82);
         $fs->put(self::webpPath($this->path), (string) $webp);
 
-        // Resized variants
+
         foreach ($this->widths as $w) {
-            $resized = $image->scale(width: $w);
-            $fs->put(self::variantPath($this->path, $w), (string) $resized->toJpeg(82));
+            try {
+                $resized = $image->scale(width: $w);
+                $fs->put(self::variantPath($this->path, $w), (string) $resized->toJpeg(82));
+            } catch (\Throwable $e) {
+                Log::error('image.resize.fail', ['w'=>$w,'path'=>$this->path,'err'=>$e->getMessage()]);
+            }
         }
 
         if (!$this->keepOriginal) {
             $fs->delete($this->path);
         }
+    }
+
+    public function failed(\Throwable $e): void
+    {
+        Log::error('job.image_optimize.failed', ['path'=>$this->path,'disk'=>$this->disk,'err'=>$e->getMessage()]);
     }
 
     public static function webpPath(string $path): string

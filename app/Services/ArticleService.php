@@ -1,59 +1,77 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Contracts\ArticleRepositoryInterface;
+use App\DTO\Article\{CreateArticleData, UpdateArticleData};
+use App\Exceptions\ApiException;
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use App\Notifications\ArticlePublished;
+use Illuminate\Support\Facades\Log;
 class ArticleService
 {
     public function __construct(private ArticleRepositoryInterface $repo) {}
 
-    public function list(array $filters, int $perPage = 15)
+    public function list(array $filters, int $perPage)
     { return $this->repo->paginate($filters, $perPage); }
 
     public function findBySlug(string $slug): ?Article
     { return $this->repo->findBySlug($slug); }
 
-    public function create(array $data): Article {
-        return \DB::transaction(function() use ($data){
-            $data['reading_time'] = $data['reading_time'] ?? $this->estimate($data['body'] ?? '');
-            $a = $this->repo->create($data);
-            if (!empty($data['tag_ids'])) $a->tags()->sync($data['tag_ids']);
-            if ($a->status === 'published') $a->searchable();
-            return $a->load(['category','tags','author']);
-        });
+    public function create(CreateArticleData|array $data): Article
+    {
+        $arr = $data instanceof CreateArticleData ? $data->toArray() : $data;
+        try {
+            return DB::transaction(function () use ($arr) {
+                $arr['reading_time'] = $arr['reading_time'] ?? estimate_minutes($arr['body'] ?? '');
+                /** @var Article $a */
+                $a = $this->repo->create($arr);
+                if (!empty($arr['tag_ids'])) $a->tags()->sync($arr['tag_ids']);
+                if ($a->status === 'published') $a->searchable();
+                return $a->load(['category','tags','author']);
+            });
+        } catch (\Throwable $e) {
+            Log::error('article.create.fail', ['err'=>$e->getMessage()]);
+            throw new ApiException('Makale oluşturulamadı', 500);
+        }
     }
 
-    public function update(int $id, array $data): Article {
-        $a = $this->repo->findById($id) ?? abort(404,'Article not found');
-        return \DB::transaction(function() use ($a,$data){
-            $a = $this->repo->update($a,$data);
-            if (array_key_exists('tag_ids',$data)) $a->tags()->sync($data['tag_ids'] ?? []);
-            if ($a->status === 'published') $a->searchable(); else $a->unsearchable();
-            return $a->load(['category','tags','author']);
-        });
+    public function update(int $id, UpdateArticleData|array $data): Article
+    {
+        $arr = $data instanceof UpdateArticleData ? $data->toArray() : $data;
+        $a = $this->repo->findById($id) ?? throw new ApiException('Makale bulunamadı',404);
+        try {
+            return DB::transaction(function () use ($a,$arr) {
+                $a = $this->repo->update($a, $arr);
+                if (array_key_exists('tag_ids',$arr)) $a->tags()->sync($arr['tag_ids'] ?? []);
+                if ($a->status === 'published') $a->searchable(); else $a->unsearchable();
+                return $a->load(['category','tags','author']);
+            });
+        } catch (\Throwable $e) {
+            Log::warning('article.update.fail', ['id'=>$a->id,'err'=>$e->getMessage()]);
+            throw new ApiException('Makale güncellenemedi', 500);
+        }
     }
 
-    public function publish(int $id): Article {
-        $a = $this->repo->findById($id) ?? abort(404);
-        $a = $this->repo->update($a, ['status'=>'published','published_at'=>now()]);
-        $a->searchable();
-        \Cache::forget('rss:latest'); \Cache::forget('sitemap:xml');
-        return $a->load(['category','tags','author']);
+    public function publish(int $id): Article
+    {
+        $a = $this->repo->findById($id) ?? throw new ApiException('Makale bulunamadı',404);
+        try {
+            $a = $this->repo->update($a, ['status'=>'published','published_at'=>now()]);
+            $a->searchable(); \Cache::forget('rss:latest'); \Cache::forget('sitemap:xml');
+            return $a->load(['category','tags','author']);
+        } catch (\Throwable $e) {
+            Log::error('article.publish.fail', ['id'=>$id,'err'=>$e->getMessage()]);
+            throw new ApiException('Yayınlama başarısız', 500);
+        }
     }
 
     public function delete(int $id): void
     {
-        $a = $this->repo->findById($id) ?? abort(404);
+        $a = $this->repo->findById($id) ?? throw new ApiException('Makale bulunamadı',404);
         $this->repo->delete($a);
     }
 
-    private function estimate(string $text): int
-    {
-        $words = str_word_count(strip_tags($text));
-        return max(1, (int)ceil($words/200));
-    }
+    public function estimate(string $html): int { return estimate_minutes($html); }
 }

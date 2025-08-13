@@ -45,3 +45,21 @@ if (!function_exists('estimate_minutes')) {
         return max(1, (int) ceil(str_word_count(strip_tags($html)) / $wpm));
     }
 }
+
+if (!function_exists('per_page')) {
+    function per_page(\Illuminate\Http\Request $r, int $def=15, int $max=100): int {
+        $p = (int) $r->query('per_page', $def);
+        return max(1, min($max, $p));
+    }
+}
+
+
+if (!function_exists('ref_host')) {
+    function ref_host(?string $referer, ?string $appHost=null): ?string {
+        if (!$referer) return null;
+        $host = parse_url($referer, PHP_URL_HOST);
+        if (!$host) return null;
+        $app = $appHost ?: parse_url(config('app.url'), PHP_URL_HOST);
+        return ($host === $app) ? 'direct' : $host;
+    }
+}

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\Queue;
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -17,6 +17,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        Queue::failing(function ($event) {
+            if (app()->bound('sentry')) {
+                \Sentry\captureException($event->exception);
+            }
+            \Log::error('queue.failed', [
+                'job' => $event->job?->getName(),
+                'connection' => $event->connectionName,
+                'exception' => $event->exception->getMessage(),
+            ]);
+        });
     }
 }

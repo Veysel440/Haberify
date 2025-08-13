@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
-
+use Spatie\Activitylog\LogOptions;use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Support\Traits\SanitizesHtml;
 class Article extends Model
 {
-    use HasFactory, Searchable, LogsActivity;
+    use HasFactory, Searchable, SoftDeletes,  SanitizesHtml, LogsActivity;
 
     protected $fillable = [
         'author_id','category_id','title','slug','summary','body','cover_path',
@@ -48,6 +48,10 @@ class Article extends Model
 
     // Mutator
     public function setSlugAttribute($v){ $this->attributes['slug'] = $v ?: \Str::slug($this->attributes['title'] ?? ''); }
+    public function setBodyAttribute($value): void
+    {
+        $this->attributes['body'] = $this->sanitizeHtml($value);
+    }
 
     // Scout
     public function toSearchableArray(): array

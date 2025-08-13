@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Services\CategoryService;
 use App\Http\Requests\Api\V1\Category\{StoreCategoryRequest, UpdateCategoryRequest};
 use App\Http\Resources\Api\V1\CategoryResource;
+use App\DTO\Category\{CreateCategoryData, UpdateCategoryData};
+use App\Http\Responses\ApiResponse;
 
 class CategoryController extends Controller
 {
@@ -13,17 +15,26 @@ class CategoryController extends Controller
     { $this->middleware('auth:sanctum')->except(['index','show']); }
 
     public function index()
-    { return CategoryResource::collection($this->svc->all()); }
+    { return ApiResponse::ok(CategoryResource::collection($this->svc->all())->resolve()); }
 
     public function show(string $slug)
-    { return new CategoryResource($this->svc->findBySlug($slug) ?? abort(404)); }
+    {
+        $c = $this->svc->findBySlug($slug) ?? abort(404);
+        return ApiResponse::ok((new CategoryResource($c))->resolve());
+    }
 
     public function store(StoreCategoryRequest $r)
-    { return (new CategoryResource($this->svc->create($r->validated())))->response()->setStatusCode(201); }
+    {
+        $c = $this->svc->create(CreateCategoryData::from($r->validated()));
+        return ApiResponse::created((new CategoryResource($c))->resolve());
+    }
 
     public function update(int $id, UpdateCategoryRequest $r)
-    { return new CategoryResource($this->svc->update($id, $r->validated())); }
+    {
+        $c = $this->svc->update($id, UpdateCategoryData::from($r->validated()));
+        return ApiResponse::ok((new CategoryResource($c))->resolve());
+    }
 
     public function destroy(int $id)
-    { $this->svc->delete($id); return response()->noContent(); }
+    { $this->svc->delete($id); return ApiResponse::noContent(); }
 }

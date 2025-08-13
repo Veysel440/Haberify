@@ -21,7 +21,8 @@ use App\Http\Controllers\Api\V1\{
 use App\Http\Controllers\Api\V1\Admin\{
     ArticleAdminController,
     CommentAdminController,
-    UserAdminController
+    UserAdminController,
+    TrashController
 };
 
 Route::prefix('v1')->group(function () {
@@ -36,34 +37,37 @@ Route::prefix('v1')->group(function () {
     Route::get('tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
     Route::get('pages/{slug}', [PageController::class,'show'])->name('pages.show');
-
     Route::get('menus/{name}', [MenuController::class,'show'])->name('menus.show');
 
-    // Comments (public create ok, list ok)
+    // Comments
     Route::get('articles/{articleId}/comments', [CommentController::class, 'index'])
         ->whereNumber('articleId')->name('comments.index');
     Route::post('articles/{articleId}/comments', [CommentController::class, 'store'])
-        ->whereNumber('articleId')->name('comments.store');
+        ->whereNumber('articleId')
+        ->middleware(['throttle:comment-create','comment.notbanned'])
+        ->name('comments.store');
 
-    // Auth + 2FA (login flow)
-    Route::post('auth/login', [TwoFactorController::class,'verifyLogin'])->name('auth.login');
-    Route::post('auth/2fa/verify', [TwoFactorController::class,'verifyCode'])->name('auth.2fa.verify');
+    // Auth + 2FA
+    Route::post('auth/login', [TwoFactorController::class,'verifyLogin'])
+        ->middleware('throttle:login')->name('auth.login');
+    Route::post('auth/2fa/verify', [TwoFactorController::class,'verifyCode'])
+        ->middleware('throttle:twofactor')->name('auth.2fa.verify');
 
     // Search
-    Route::get('search', SearchController::class)->name('search');
+    Route::get('search', SearchController::class)->middleware('throttle:search')->name('search');
 
-    // Authenticated zone
+    // Authenticated
     Route::middleware('auth:sanctum')->group(function () {
         // Notifications
         Route::get('notifications', [NotificationController::class,'index'])->name('notifications.index');
         Route::get('notifications/unread-count', [NotificationController::class,'unreadCount'])->name('notifications.unreadCount');
-        Route::post('notifications/{id}/read', [NotificationController::class,'markAsRead'])->name('notifications.read');
+        Route::post('notifications/{id}/read', [NotificationController::class,'markAsRead'])->whereNumber('id')->name('notifications.read');
 
-        // Media (articles)
+        // Media
         Route::post('articles/{id}/cover',   [MediaController::class,'uploadCover'])
-            ->middleware('permission:articles.update')->whereNumber('id')->name('articles.cover');
+            ->middleware(['permission:articles.update','throttle:media-upload'])->whereNumber('id')->name('articles.cover');
         Route::post('articles/{id}/gallery', [MediaController::class,'uploadGallery'])
-            ->middleware('permission:articles.update')->whereNumber('id')->name('articles.gallery');
+            ->middleware(['permission:articles.update','throttle:media-upload'])->whereNumber('id')->name('articles.gallery');
 
         // Articles
         Route::post('articles', [ArticleController::class, 'store'])
@@ -108,7 +112,7 @@ Route::prefix('v1')->group(function () {
         Route::put('settings/{key}', [SettingController::class,'update'])
             ->middleware('permission:settings.manage')->name('settings.update');
 
-        // Pages manage
+        // Pages
         Route::post('pages', [PageController::class,'store'])
             ->middleware('permission:pages.manage')->name('pages.store');
         Route::put('pages/{id}', [PageController::class,'update'])
@@ -140,10 +144,11 @@ Route::prefix('v1')->group(function () {
             Route::post('disable',[TwoFactorController::class,'disable'])->name('auth.2fa.disable');
         });
 
+        // Admin
         Route::prefix('admin')->group(function () {
-
             // Articles admin
-            Route::get('articles', [ArticleAdminController::class,'index'])->middleware('permission:articles.update');
+            Route::get('articles', [ArticleAdminController::class,'index'])
+                ->middleware('permission:articles.update');
             Route::post('articles/{id}/schedule', [ArticleAdminController::class,'schedule'])
                 ->middleware('permission:articles.publish')->whereNumber('id');
             Route::post('articles/{id}/feature', [ArticleAdminController::class,'feature'])
@@ -151,16 +156,38 @@ Route::prefix('v1')->group(function () {
             Route::post('articles/{id}/unfeature', [ArticleAdminController::class,'unfeature'])
                 ->middleware('permission:articles.update')->whereNumber('id');
             Route::post('articles/bulk', [ArticleAdminController::class,'bulk'])
-                ->middleware('permission:articles.update');
+                ->middleware(['permission:articles.update','throttle:admin-bulk']);
 
             // Comments admin
-            Route::post('comments/ban', [CommentAdminController::class,'ban'])->middleware('permission:comments.moderate');
+            Route::post('comments/ban', [CommentAdminController::class,'ban'])
+                ->middleware('permission:comments.moderate');
             Route::post('comments/unban/{userId}', [CommentAdminController::class,'unban'])
                 ->middleware('permission:comments.moderate')->whereNumber('userId');
 
             // Users admin
-            Route::get('users', [UserAdminController::class,'index']);
-            Route::post('users/{id}/assign-role', [UserAdminController::class,'assignRole'])->whereNumber('id');
+            Route::get('users', [UserAdminController::class,'index'])->middleware('permission:users.manage');
+            Route::post('users/{id}/assign-role', [UserAdminController::class,'assignRole'])
+                ->middleware('permission:users.manage')->whereNumber('id');
+
+            Route::get('trash/articles', [TrashController::class,'articles'])->middleware('permission:articles.delete');
+            Route::post('trash/articles/{id}/restore', [TrashController::class,'articleRestore'])->middleware('permission:articles.delete')->whereNumber('id');
+            Route::delete('trash/articles/{id}/force', [TrashController::class,'articleForceDelete'])->middleware('permission:articles.delete')->whereNumber('id');
+
+            Route::get('trash/categories', [TrashController::class,'categories'])->middleware('permission:categories.manage');
+            Route::post('trash/categories/{id}/restore', [TrashController::class,'categoryRestore'])->middleware('permission:categories.manage')->whereNumber('id');
+            Route::delete('trash/categories/{id}/force', [TrashController::class,'categoryForceDelete'])->middleware('permission:categories.manage')->whereNumber('id');
+
+            Route::get('trash/tags', [TrashController::class,'tags'])->middleware('permission:tags.manage');
+            Route::post('trash/tags/{id}/restore', [TrashController::class,'tagRestore'])->middleware('permission:tags.manage')->whereNumber('id');
+            Route::delete('trash/tags/{id}/force', [TrashController::class,'tagForceDelete'])->middleware('permission:tags.manage')->whereNumber('id');
+
+            Route::get('trash/comments', [TrashController::class,'comments'])->middleware('permission:comments.moderate');
+            Route::post('trash/comments/{id}/restore', [TrashController::class,'commentRestore'])->middleware('permission:comments.moderate')->whereNumber('id');
+            Route::delete('trash/comments/{id}/force', [TrashController::class,'commentForceDelete'])->middleware('permission:comments.moderate')->whereNumber('id');
+
+            Route::get('trash/pages', [TrashController::class,'pages'])->middleware('permission:pages.manage');
+            Route::post('trash/pages/{id}/restore', [TrashController::class,'pageRestore'])->middleware('permission:pages.manage')->whereNumber('id');
+            Route::delete('trash/pages/{id}/force', [TrashController::class,'pageForceDelete'])->middleware('permission:pages.manage')->whereNumber('id');
         });
     });
 });
