@@ -1,25 +1,22 @@
 "use client";
-import { useEffect } from "react";
-import { api, setToken } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import RequireAuth from "@/components/RequireAuth";
+import Link from "next/link";
 
-export default function AdminHome() {
-    useEffect(()=>{
-        const t = localStorage.getItem("token"); if (t) setToken(t); else window.location.href="/login";
-    },[]);
-    const { data } = useQuery({
-        queryKey:["admin-articles"],
-        queryFn: async()=> (await api.get("/admin/articles")).data,
-    });
+export default function AdminHome(){
     return (
-        <main style={{padding:24}}>
-            <h2>Admin / Makaleler</h2>
-            <table><thead><tr><th>ID</th><th>Başlık</th><th>Durum</th></tr></thead>
-                <tbody>
-                {data?.data?.data?.map((a:any)=>(
-                    <tr key={a.id}><td>{a.id}</td><td>{a.title}</td><td>{a.status}</td></tr>
-                ))}
-                </tbody></table>
-        </main>
+        <RequireAuth>
+            <div className="space-y-4">
+                <h1 className="text-xl font-semibold">Admin</h1>
+                <div className="grid grid-cols-2 gap-4">
+                    <Card title="Makaleler" href="/admin/articles" />
+                    <Card title="Yorumlar" href="/admin/comments" />
+                    <Card title="Analitik" href="/admin/analytics" />
+                    <Card title="Çöp Kutusu" href="/admin/trash" />
+                </div>
+            </div>
+        </RequireAuth>
     );
+}
+function Card({ title, href}:{title:string; href:string}) {
+    return <Link href={href} className="block p-6 border rounded bg-white hover:shadow"><div className="font-medium">{title}</div><div className="text-sm text-gray-500">Yönet</div></Link>;
 }
