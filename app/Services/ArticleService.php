@@ -9,6 +9,7 @@ use App\Exceptions\ApiException;
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 class ArticleService
 {
     public function __construct(private ArticleRepositoryInterface $repo) {}
@@ -46,6 +47,7 @@ class ArticleService
                 $a = $this->repo->update($a, $arr);
                 if (array_key_exists('tag_ids',$arr)) $a->tags()->sync($arr['tag_ids'] ?? []);
                 if ($a->status === 'published') $a->searchable(); else $a->unsearchable();
+                $this->revalidate(['articles', "article:{$a->slug}"]);
                 return $a->load(['category','tags','author']);
             });
         } catch (\Throwable $e) {
@@ -60,10 +62,24 @@ class ArticleService
         try {
             $a = $this->repo->update($a, ['status'=>'published','published_at'=>now()]);
             $a->searchable(); \Cache::forget('rss:latest'); \Cache::forget('sitemap:xml');
+            $this->revalidate(['articles', "article:{$a->slug}", "category:{$a->category?->slug}", ...$a->tags->map(fn($t)=>"tag:{$t->slug}")->all()]);
             return $a->load(['category','tags','author']);
         } catch (\Throwable $e) {
             Log::error('article.publish.fail', ['id'=>$id,'err'=>$e->getMessage()]);
             throw new ApiException('Yayınlama başarısız', 500);
+        }
+
+    }
+
+    private function revalidate(array $tags): void
+    {
+        try {
+            Http::timeout(3)->post(config('app.front_revalidate_url'), [
+                'secret' => config('app.front_revalidate_secret'),
+                'tags'   => array_values(array_unique($tags)),
+            ]);
+        } catch (\Throwable $e) {
+            \Log::info('front.revalidate.fail', ['err'=>$e->getMessage()]);
         }
     }
 
