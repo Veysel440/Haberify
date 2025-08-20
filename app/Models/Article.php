@@ -67,4 +67,15 @@ class Article extends Model
             'published_at' => optional($this->published_at)->timestamp,
         ];
     }
+
+    public function getCoverUrlAttribute(): ?string
+    {
+        $p = $this->cover_path;
+        return $p ? \Storage::disk(config('filesystems.default','public'))->url($p) : null;
+    }
+    public function getThumbUrlAttribute(): ?string
+    {
+        $p = $this->thumb_path;
+        return $p ? \Storage::disk(config('filesystems.default','public'))->url($p) : null;
+    }
 }

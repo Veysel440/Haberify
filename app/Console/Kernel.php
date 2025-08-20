@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('articles:publish-scheduled')->everyMinute()->withoutOverlapping();
         $schedule->command('analytics:rollup')->hourly();
         $schedule->command('mail:weekly-digest')->weeklyOn(1, '08:00');
+        $schedule->job(new \App\Jobs\PublishScheduledArticles)->everyMinute();
+        $schedule->job(new \App\Jobs\SendWeeklyDigest)->weeklyOn(1, '08:00');
     }
 
     /**

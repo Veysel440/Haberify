@@ -2,16 +2,41 @@
 
 namespace App\Policies;
 
-use App\Models\{User, Article};
+use App\Models\User;
 
-class ArticlePolicy
+class ArticlePolicy extends BaseResourcePolicy
 {
-    public function viewAny(User $u): bool { return true; }
-    public function view(User $u = null, Article $a): bool { return true; }
-    public function create(User $u): bool { return $u->can('articles.create'); }
-    public function update(User $u, Article $a): bool
-    { return $u->can('articles.update') && ($u->id === $a->author_id || $u->hasAnyRole(['editor','admin'])); }
-    public function publish(User $u, Article $a): bool { return $u->can('articles.publish'); }
-    public function delete(User $u, Article $a): bool
-    { return $u->can('articles.delete') || $u->hasRole('admin'); }
+    protected function prefix(): string { return 'articles'; }
+
+    public function publish(User $user, $article = null): bool
+    {
+        return $user->can('articles.publish');
+    }
+
+    public function viewAny(?User $user, $model = null): bool { return true; }
+
+    public function view(?User $user, $article = null): bool
+    {
+        if (!$article) return true;
+        if (($article->status ?? null) === 'published') return true;
+        if (!$user) return false;
+
+        return $user->id === ($article->author_id ?? null)
+            || $user->hasAnyRole(['editor','admin'])
+            || $user->can('articles.update');
+    }
+
+    public function update(User $user, $article = null): bool
+    {
+        if (!$user->can('articles.update')) return false;
+        if (!$article) return true;
+
+        return $user->id === ($article->author_id ?? null)
+            || $user->hasAnyRole(['editor','admin']);
+    }
+
+    public function delete(User $user, $article = null): bool
+    {
+        return $user->can('articles.delete') || $user->hasRole('admin');
+    }
 }

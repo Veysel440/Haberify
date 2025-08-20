@@ -5,7 +5,10 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Category;
 
-class CategoryPolicy
+class CategoryPolicy extends BaseResourcePolicy
 {
-    public function manage(User $u): bool { return $u->can('categories.manage'); }
+    protected function prefix(): string { return 'categories'; }
+
+    public function viewAny(?User $user, $model = null): bool { return true; }
+    public function view(?User $user, $model = null): bool     { return true; }
 }

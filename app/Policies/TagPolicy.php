@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
-
 use App\Models\User;
-use App\Models\Tag;
 
-class TagPolicy
+class TagPolicy extends BaseResourcePolicy
 {
-    public function manage(User $u): bool { return $u->can('tags.manage'); }
+    protected function prefix(): string { return 'tags'; }
+
+    public function viewAny(?User $user): bool { return true; }
+    public function view(?User $user): bool     { return true; }
 }
