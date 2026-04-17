@@ -2,13 +2,19 @@
 import { useEffect, useState } from "react";
 import { setToken } from "@/lib/api";
 
-export default function RequireAuth({ children }:{children: React.ReactNode}) {
-    const [ok,setOk]=useState(false);
-    useEffect(()=>{
-        const t = localStorage.getItem("token");
-        if (!t) location.href="/login";
-        else { setToken(t); setOk(true); }
-    },[]);
-    if (!ok) return null;
+export default function RequireAuth({ children }: { children: React.ReactNode }) {
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            location.href = "/login";
+            return;
+        }
+        setToken(token);
+        setReady(true);
+    }, []);
+
+    if (!ready) return null;
     return <>{children}</>;
 }
