@@ -1,5 +1,6 @@
 import { api } from "@/lib/public-api";
 import Comments from "@/components/Comments";
+import SafeHtml from "@/components/SafeHtml";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -41,7 +42,7 @@ export default async function ArticlePage({ params }: Props) {
                 </div>
             )}
 
-            <div dangerouslySetInnerHTML={{ __html: a.body ?? "" }} />
+            <SafeHtml html={a.body} />
 
             <div className="mt-10"><Comments articleId={a.id} /></div>
 
