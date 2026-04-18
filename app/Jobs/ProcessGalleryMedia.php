@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Models\Article;
@@ -16,16 +18,19 @@ class ProcessGalleryMedia implements ShouldQueue
         public int $articleId,
         public string $disk,
         /** @var string[] */
-        public array $originalPaths
+        public array $originalPaths,
     ) {}
 
     public function handle(MediaProcessor $proc): void
     {
         $article = Article::find($this->articleId);
-        if (!$article) return;
+
+        if (! $article) {
+            return;
+        }
 
         foreach ($this->originalPaths as $i => $path) {
-            $dir = "articles/{$this->articleId}/gallery/".($i+1);
+            $dir = "articles/{$this->articleId}/gallery/" . ($i + 1);
             $out = $proc->process($this->disk, $path, $dir, 1600, 900, 400, 225);
         }
     }

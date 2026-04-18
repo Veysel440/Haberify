@@ -1,29 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\Api\V1\Admin\ArticleAdminController;
+use App\Http\Controllers\Api\V1\Admin\CommentAdminController;
+use App\Http\Controllers\Api\V1\Admin\TrashController;
+use App\Http\Controllers\Api\V1\Admin\UserAdminController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
+use App\Http\Controllers\Api\V1\ArticleController;
+use App\Http\Controllers\Api\V1\AuditController;
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CommentController;
+use App\Http\Controllers\Api\V1\ExportController;
+use App\Http\Controllers\Api\V1\ImportController;
+use App\Http\Controllers\Api\V1\MediaController;
+use App\Http\Controllers\Api\V1\MenuController;
+use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\PageController;
+use App\Http\Controllers\Api\V1\SearchController;
+use App\Http\Controllers\Api\V1\SettingController;
+use App\Http\Controllers\Api\V1\TagController;
+use App\Http\Controllers\Api\V1\TwoFactorController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\{
-    ArticleController,
-    AuditController,
-    CategoryController,
-    CommentController,
-    ExportController,
-    ImportController,
-    MediaController,
-    MenuController,
-    NotificationController,
-    PageController,
-    SettingController,
-    TagController,
-    TwoFactorController,
-    AnalyticsController,
-    SearchController
-};
-use App\Http\Controllers\Api\V1\Admin\{
-    ArticleAdminController,
-    CommentAdminController,
-    UserAdminController,
-    TrashController
-};
 
 Route::prefix('v1')->group(function () {
     // Public
@@ -36,21 +34,21 @@ Route::prefix('v1')->group(function () {
     Route::get('tags', [TagController::class, 'index'])->name('tags.index');
     Route::get('tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
-    Route::get('pages/{slug}', [PageController::class,'show'])->name('pages.show');
-    Route::get('menus/{name}', [MenuController::class,'show'])->name('menus.show');
+    Route::get('pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+    Route::get('menus/{name}', [MenuController::class, 'show'])->name('menus.show');
 
     // Comments
     Route::get('articles/{articleId}/comments', [CommentController::class, 'index'])
         ->whereNumber('articleId')->name('comments.index');
     Route::post('articles/{articleId}/comments', [CommentController::class, 'store'])
         ->whereNumber('articleId')
-        ->middleware(['throttle:comment-create','comment.notbanned'])
+        ->middleware(['throttle:comment-create', 'comment.notbanned'])
         ->name('comments.store');
 
     // Auth + 2FA
-    Route::post('auth/login', [TwoFactorController::class,'verifyLogin'])
+    Route::post('auth/login', [TwoFactorController::class, 'verifyLogin'])
         ->middleware('throttle:login')->name('auth.login');
-    Route::post('auth/2fa/verify', [TwoFactorController::class,'verifyCode'])
+    Route::post('auth/2fa/verify', [TwoFactorController::class, 'verifyCode'])
         ->middleware('throttle:twofactor')->name('auth.2fa.verify');
 
     // Search
@@ -59,15 +57,15 @@ Route::prefix('v1')->group(function () {
     // Authenticated
     Route::middleware('auth:sanctum')->group(function () {
         // Notifications
-        Route::get('notifications', [NotificationController::class,'index'])->name('notifications.index');
-        Route::get('notifications/unread-count', [NotificationController::class,'unreadCount'])->name('notifications.unreadCount');
-        Route::post('notifications/{id}/read', [NotificationController::class,'markAsRead'])->whereNumber('id')->name('notifications.read');
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+        Route::post('notifications/{id}/read', [NotificationController::class, 'markAsRead'])->whereNumber('id')->name('notifications.read');
 
         // Media
-        Route::post('articles/{id}/cover',   [MediaController::class,'uploadCover'])
-            ->middleware(['permission:articles.update','throttle:media-upload'])->whereNumber('id')->name('articles.cover');
-        Route::post('articles/{id}/gallery', [MediaController::class,'uploadGallery'])
-            ->middleware(['permission:articles.update','throttle:media-upload'])->whereNumber('id')->name('articles.gallery');
+        Route::post('articles/{id}/cover', [MediaController::class, 'uploadCover'])
+            ->middleware(['permission:articles.update', 'throttle:media-upload'])->whereNumber('id')->name('articles.cover');
+        Route::post('articles/{id}/gallery', [MediaController::class, 'uploadGallery'])
+            ->middleware(['permission:articles.update', 'throttle:media-upload'])->whereNumber('id')->name('articles.gallery');
 
         // Articles
         Route::post('articles', [ArticleController::class, 'store'])
@@ -104,90 +102,90 @@ Route::prefix('v1')->group(function () {
             ->middleware('permission:comments.moderate')->whereNumber('id')->name('comments.destroy');
 
         // Menus
-        Route::put('menus/{name}', [MenuController::class,'update'])
+        Route::put('menus/{name}', [MenuController::class, 'update'])
             ->middleware('permission:menus.edit')->name('menus.update');
 
         // Settings
-        Route::get('settings/{key}', [SettingController::class,'show'])->name('settings.show');
-        Route::put('settings/{key}', [SettingController::class,'update'])
+        Route::get('settings/{key}', [SettingController::class, 'show'])->name('settings.show');
+        Route::put('settings/{key}', [SettingController::class, 'update'])
             ->middleware('permission:settings.manage')->name('settings.update');
 
         // Pages
-        Route::post('pages', [PageController::class,'store'])
+        Route::post('pages', [PageController::class, 'store'])
             ->middleware('permission:pages.manage')->name('pages.store');
-        Route::put('pages/{id}', [PageController::class,'update'])
+        Route::put('pages/{id}', [PageController::class, 'update'])
             ->middleware('permission:pages.manage')->whereNumber('id')->name('pages.update');
-        Route::delete('pages/{id}', [PageController::class,'destroy'])
+        Route::delete('pages/{id}', [PageController::class, 'destroy'])
             ->middleware('permission:pages.manage')->whereNumber('id')->name('pages.destroy');
 
         // Analytics
         Route::prefix('analytics')->middleware('permission:analytics.view')->group(function () {
-            Route::get('overview', [AnalyticsController::class,'overview'])->name('analytics.overview');
-            Route::get('top-articles', [AnalyticsController::class,'topArticles'])->name('analytics.top');
-            Route::get('referrers', [AnalyticsController::class,'referrers'])->name('analytics.referrers');
-            Route::get('category-share', [AnalyticsController::class,'categoryShare'])->name('analytics.categoryShare');
+            Route::get('overview', [AnalyticsController::class, 'overview'])->name('analytics.overview');
+            Route::get('top-articles', [AnalyticsController::class, 'topArticles'])->name('analytics.top');
+            Route::get('referrers', [AnalyticsController::class, 'referrers'])->name('analytics.referrers');
+            Route::get('category-share', [AnalyticsController::class, 'categoryShare'])->name('analytics.categoryShare');
         });
 
         // Export / Import
-        Route::get('exports/articles.csv', [ExportController::class,'articlesCsv'])->name('exports.articles');
-        Route::post('imports/categories', [ImportController::class,'categories'])
+        Route::get('exports/articles.csv', [ExportController::class, 'articlesCsv'])->name('exports.articles');
+        Route::post('imports/categories', [ImportController::class, 'categories'])
             ->middleware('permission:categories.manage')->name('imports.categories');
 
         // Audit
-        Route::get('audit', [AuditController::class,'index'])
+        Route::get('audit', [AuditController::class, 'index'])
             ->middleware('permission:analytics.view')->name('audit.index');
 
         // 2FA manage
-        Route::prefix('auth/2fa')->group(function(){
-            Route::post('enable', [TwoFactorController::class,'enable'])->name('auth.2fa.enable');
-            Route::get('qrcode',  [TwoFactorController::class,'qrcode'])->name('auth.2fa.qrcode');
-            Route::post('disable',[TwoFactorController::class,'disable'])->name('auth.2fa.disable');
+        Route::prefix('auth/2fa')->group(function () {
+            Route::post('enable', [TwoFactorController::class, 'enable'])->name('auth.2fa.enable');
+            Route::get('qrcode', [TwoFactorController::class, 'qrcode'])->name('auth.2fa.qrcode');
+            Route::post('disable', [TwoFactorController::class, 'disable'])->name('auth.2fa.disable');
         });
 
         // Admin
         Route::prefix('admin')->group(function () {
             // Articles admin
-            Route::get('articles', [ArticleAdminController::class,'index'])
+            Route::get('articles', [ArticleAdminController::class, 'index'])
                 ->middleware('permission:articles.update');
-            Route::post('articles/{id}/schedule', [ArticleAdminController::class,'schedule'])
+            Route::post('articles/{id}/schedule', [ArticleAdminController::class, 'schedule'])
                 ->middleware('permission:articles.publish')->whereNumber('id');
-            Route::post('articles/{id}/feature', [ArticleAdminController::class,'feature'])
+            Route::post('articles/{id}/feature', [ArticleAdminController::class, 'feature'])
                 ->middleware('permission:articles.update')->whereNumber('id');
-            Route::post('articles/{id}/unfeature', [ArticleAdminController::class,'unfeature'])
+            Route::post('articles/{id}/unfeature', [ArticleAdminController::class, 'unfeature'])
                 ->middleware('permission:articles.update')->whereNumber('id');
-            Route::post('articles/bulk', [ArticleAdminController::class,'bulk'])
-                ->middleware(['permission:articles.update','throttle:admin-bulk']);
+            Route::post('articles/bulk', [ArticleAdminController::class, 'bulk'])
+                ->middleware(['permission:articles.update', 'throttle:admin-bulk']);
 
             // Comments admin
-            Route::post('comments/ban', [CommentAdminController::class,'ban'])
+            Route::post('comments/ban', [CommentAdminController::class, 'ban'])
                 ->middleware('permission:comments.moderate');
-            Route::post('comments/unban/{userId}', [CommentAdminController::class,'unban'])
+            Route::post('comments/unban/{userId}', [CommentAdminController::class, 'unban'])
                 ->middleware('permission:comments.moderate')->whereNumber('userId');
 
             // Users admin
-            Route::get('users', [UserAdminController::class,'index'])->middleware('permission:users.manage');
-            Route::post('users/{id}/assign-role', [UserAdminController::class,'assignRole'])
+            Route::get('users', [UserAdminController::class, 'index'])->middleware('permission:users.manage');
+            Route::post('users/{id}/assign-role', [UserAdminController::class, 'assignRole'])
                 ->middleware('permission:users.manage')->whereNumber('id');
 
-            Route::get('trash/articles', [TrashController::class,'articles'])->middleware('permission:articles.delete');
-            Route::post('trash/articles/{id}/restore', [TrashController::class,'articleRestore'])->middleware('permission:articles.delete')->whereNumber('id');
-            Route::delete('trash/articles/{id}/force', [TrashController::class,'articleForceDelete'])->middleware('permission:articles.delete')->whereNumber('id');
+            Route::get('trash/articles', [TrashController::class, 'articles'])->middleware('permission:articles.delete');
+            Route::post('trash/articles/{id}/restore', [TrashController::class, 'articleRestore'])->middleware('permission:articles.delete')->whereNumber('id');
+            Route::delete('trash/articles/{id}/force', [TrashController::class, 'articleForceDelete'])->middleware('permission:articles.delete')->whereNumber('id');
 
-            Route::get('trash/categories', [TrashController::class,'categories'])->middleware('permission:categories.manage');
-            Route::post('trash/categories/{id}/restore', [TrashController::class,'categoryRestore'])->middleware('permission:categories.manage')->whereNumber('id');
-            Route::delete('trash/categories/{id}/force', [TrashController::class,'categoryForceDelete'])->middleware('permission:categories.manage')->whereNumber('id');
+            Route::get('trash/categories', [TrashController::class, 'categories'])->middleware('permission:categories.manage');
+            Route::post('trash/categories/{id}/restore', [TrashController::class, 'categoryRestore'])->middleware('permission:categories.manage')->whereNumber('id');
+            Route::delete('trash/categories/{id}/force', [TrashController::class, 'categoryForceDelete'])->middleware('permission:categories.manage')->whereNumber('id');
 
-            Route::get('trash/tags', [TrashController::class,'tags'])->middleware('permission:tags.manage');
-            Route::post('trash/tags/{id}/restore', [TrashController::class,'tagRestore'])->middleware('permission:tags.manage')->whereNumber('id');
-            Route::delete('trash/tags/{id}/force', [TrashController::class,'tagForceDelete'])->middleware('permission:tags.manage')->whereNumber('id');
+            Route::get('trash/tags', [TrashController::class, 'tags'])->middleware('permission:tags.manage');
+            Route::post('trash/tags/{id}/restore', [TrashController::class, 'tagRestore'])->middleware('permission:tags.manage')->whereNumber('id');
+            Route::delete('trash/tags/{id}/force', [TrashController::class, 'tagForceDelete'])->middleware('permission:tags.manage')->whereNumber('id');
 
-            Route::get('trash/comments', [TrashController::class,'comments'])->middleware('permission:comments.moderate');
-            Route::post('trash/comments/{id}/restore', [TrashController::class,'commentRestore'])->middleware('permission:comments.moderate')->whereNumber('id');
-            Route::delete('trash/comments/{id}/force', [TrashController::class,'commentForceDelete'])->middleware('permission:comments.moderate')->whereNumber('id');
+            Route::get('trash/comments', [TrashController::class, 'comments'])->middleware('permission:comments.moderate');
+            Route::post('trash/comments/{id}/restore', [TrashController::class, 'commentRestore'])->middleware('permission:comments.moderate')->whereNumber('id');
+            Route::delete('trash/comments/{id}/force', [TrashController::class, 'commentForceDelete'])->middleware('permission:comments.moderate')->whereNumber('id');
 
-            Route::get('trash/pages', [TrashController::class,'pages'])->middleware('permission:pages.manage');
-            Route::post('trash/pages/{id}/restore', [TrashController::class,'pageRestore'])->middleware('permission:pages.manage')->whereNumber('id');
-            Route::delete('trash/pages/{id}/force', [TrashController::class,'pageForceDelete'])->middleware('permission:pages.manage')->whereNumber('id');
+            Route::get('trash/pages', [TrashController::class, 'pages'])->middleware('permission:pages.manage');
+            Route::post('trash/pages/{id}/restore', [TrashController::class, 'pageRestore'])->middleware('permission:pages.manage')->whereNumber('id');
+            Route::delete('trash/pages/{id}/force', [TrashController::class, 'pageForceDelete'])->middleware('permission:pages.manage')->whereNumber('id');
         });
     });
 });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -13,6 +15,7 @@ class RequestIdMiddleware
         app('log')->withContext(['request_id' => $rid]);
         $response = $next($request);
         $response->headers->set('X-Request-Id', $rid);
+
         return $response;
     }
 }

@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Policies;
+declare(strict_types=1);
 
+namespace App\Policies;
 
 use App\Models\User;
 
 class MenuPolicy extends BaseResourcePolicy
 {
-    protected function prefix(): string { return 'menus'; }
+    protected function prefix(): string
+    {
+        return 'menus';
+    }
 
     public function update(User $user, $menu = null): bool
     {

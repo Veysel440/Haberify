@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class WeeklyDigest extends Notification implements ShouldQueue
 {
@@ -14,14 +16,17 @@ class WeeklyDigest extends Notification implements ShouldQueue
     public function __construct(public array $topArticles) {}
 
     public function via($notifiable): array
-    { return ['mail']; }
+    {
+        return ['mail'];
+    }
 
     public function toMail($notifiable): MailMessage
     {
         $mail = (new MailMessage)->subject('Haberify Haftalık Özet');
         foreach ($this->topArticles as $a) {
-            $mail->line($a['title'].' – '.$a['url']);
+            $mail->line($a['title'] . ' – ' . $a['url']);
         }
+
         return $mail;
     }
 }

@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\News;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class PublishScheduledNews extends Command
 {
     protected $signature = 'news:publish-scheduled';
+
     protected $description = 'Scheduled haberleri yayına alır';
 
     public function handle()

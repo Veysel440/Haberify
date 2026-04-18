@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
-use App\Models\{Article, Comment};
+use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class NewCommentSubmitted extends Notification implements ShouldQueue
 {
@@ -16,14 +19,16 @@ class NewCommentSubmitted extends Notification implements ShouldQueue
     public function __construct(public Article $article, public Comment $comment) {}
 
     public function via($notifiable): array
-    { return ['database','mail']; }
+    {
+        return ['database', 'mail'];
+    }
 
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Yeni yorum bekliyor: '.$this->article->title)
-            ->line('Yorum: "'.$this->comment->body.'"')
-            ->action('Yönet', url('/admin/articles/'.$this->article->id.'/comments'));
+            ->subject('Yeni yorum bekliyor: ' . $this->article->title)
+            ->line('Yorum: "' . $this->comment->body . '"')
+            ->action('Yönet', url('/admin/articles/' . $this->article->id . '/comments'));
     }
 
     public function toDatabase($notifiable): DatabaseMessage

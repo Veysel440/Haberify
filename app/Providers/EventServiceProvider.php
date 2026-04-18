@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -14,7 +16,9 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Spatie\Activitylog\Models\Activity::saving(function ($activity) {
-            if (auth()->check()) $activity->causer_id = auth()->id();
+            if (auth()->check()) {
+                $activity->causer_id = auth()->id();
+            }
         });
     }
 }

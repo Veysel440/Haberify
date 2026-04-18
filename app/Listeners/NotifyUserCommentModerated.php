@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners;
 
 use App\Events\CommentModerated;
@@ -11,7 +13,10 @@ class NotifyUserCommentModerated implements ShouldQueue
     public function handle(CommentModerated $event): void
     {
         $userId = $event->comment->user_id;
-        if (!$userId) return;
+
+        if (! $userId) {
+            return;
+        }
 
         event(new NotificationCreated($userId, [
             'type' => 'comment_moderated',

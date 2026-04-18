@@ -1,13 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Article;
 use App\Events\ArticlePublished;
+use App\Models\Article;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class PublishArticleJob implements ShouldQueue
 {
@@ -19,16 +21,20 @@ class PublishArticleJob implements ShouldQueue
     {
         /** @var Article|null $a */
         $a = Article::find($this->articleId);
-        if (!$a || $a->status !== 'scheduled') return;
 
-        $a->update(['status'=>'published','published_at'=>now(),'scheduled_at'=>null]);
+        if (! $a || $a->status !== 'scheduled') {
+            return;
+        }
+
+        $a->update(['status' => 'published', 'published_at' => now(), 'scheduled_at' => null]);
         $a->searchable();
-        cache()->forget('rss:latest'); cache()->forget('sitemap:xml');
+        cache()->forget('rss:latest');
+        cache()->forget('sitemap:xml');
         event(new ArticlePublished($a));
     }
 
-    public function failed(\Throwable $e): void
+    public function failed(Throwable $e): void
     {
-        Log::error('job.publish_article.failed', ['id'=>$this->articleId,'err'=>$e->getMessage()]);
+        Log::error('job.publish_article.failed', ['id' => $this->articleId, 'err' => $e->getMessage()]);
     }
 }

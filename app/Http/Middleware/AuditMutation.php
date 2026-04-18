@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Middleware;
+declare(strict_types=1);
 
+namespace App\Http\Middleware;
 
 use App\Services\AuditLogger;
 use Closure;
@@ -19,6 +20,7 @@ class AuditMutation
             $routeName = optional($request->route())->getName();
             $this->audit->log($action, null, ['route' => $routeName]);
         }
+
         return $response;
     }
 }
