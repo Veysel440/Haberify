@@ -12,7 +12,7 @@ class SetLocaleFromHeader
     public function handle($request, Closure $next)
     {
         $lang = $request->header('X-Locale', 'tr');
-        $lang = Str::of($lang)->lower()->substr(0, 2);
+        $lang = (string) Str::of($lang)->lower()->substr(0, 2);
         app()->setLocale(in_array($lang, ['tr', 'en'], true) ? $lang : 'tr');
 
         return $next($request);
