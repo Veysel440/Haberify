@@ -8,6 +8,6 @@ class TagPolicy extends BaseResourcePolicy
 {
     protected function prefix(): string { return 'tags'; }
 
-    public function viewAny(?User $user): bool { return true; }
-    public function view(?User $user): bool     { return true; }
+    public function viewAny(?User $user, $model = null): bool { return true; }
+    public function view(?User $user, $model = null): bool     { return true; }
 }

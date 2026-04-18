@@ -1,0 +1,2137 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined static method App\\Jobs\\PublishArticleJob\:\:dispatch\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Console/Commands/PublishScheduledArticles.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\News\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Console/Commands/PublishScheduledNews.php
+
+		-
+			message: '#^Method App\\Console\\Commands\\PublishScheduledNews\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Console/Commands/PublishScheduledNews.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Article\>\:\:searchable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Console/Commands/ScoutSyncArticles.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Console/Commands/ScoutSyncArticles.php
+
+		-
+			message: '#^Relation ''tags'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Console/Commands/ScoutSyncArticles.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Console/Commands/SendWeeklyDigest.php
+
+		-
+			message: '#^Method App\\Contracts\\ArticleRepositoryInterface\:\:paginate\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/ArticleRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Contracts\\CategoryRepositoryInterface\:\:allActive\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/CategoryRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Contracts\\CommentRepositoryInterface\:\:listApprovedForArticle\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/CommentRepositoryInterface.php
+
+		-
+			message: '#^Method App\\Contracts\\TagRepositoryInterface\:\:allActive\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/TagRepositoryInterface.php
+
+		-
+			message: '#^Call to an undefined method App\\Exceptions\\Handler\:\:renderable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Exceptions/Handler.php
+
+		-
+			message: '#^Method App\\Exports\\ArticlesExport\:\:query\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Exports/ArticlesExport.php
+
+		-
+			message: '#^Method App\\Exports\\ArticlesExport\:\:query\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\Relation does not specify its types\: TRelatedModel, TDeclaringModel, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Exports/ArticlesExport.php
+
+		-
+			message: '#^Method App\\Exports\\ArticlesExport\:\:query\(\) return type with generic class Laravel\\Scout\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Exports/ArticlesExport.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:bulk\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:feature\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:schedule\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:unfeature\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\CommentAdminController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/CommentAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\CommentAdminController\:\:ban\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/CommentAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\CommentAdminController\:\:unban\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/CommentAdminController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:authorize\(\)\.$#'
+			identifier: method.notFound
+			count: 15
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Function per_page not found\.$#'
+			identifier: function.notFound
+			count: 5
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:articleForceDelete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:articleRestore\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:articles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:categories\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:categoryForceDelete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:categoryRestore\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:commentForceDelete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:commentRestore\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:comments\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:pageForceDelete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:pageRestore\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:pages\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:tagForceDelete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:tagRestore\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:tags\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\UserAdminController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:getRoleNames\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:syncRoles\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:role\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\UserAdminController\:\:assignRole\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\UserAdminController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Unable to resolve the template type TWhenReturnType in call to method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:when\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalyticsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:categoryShare\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalyticsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:overview\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalyticsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:referrers\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalyticsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:topArticles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalyticsController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Function per_page not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:publish\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ArticleController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\AuditController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuditController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuditController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuditController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:login\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuthController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:logout\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuthController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:me\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuthController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:register\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/AuthController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CategoryController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CommentController\:\:approve\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CommentController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CommentController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CommentController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CommentController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CommentController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CommentController\:\:reject\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CommentController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CommentController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/CommentController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ExportController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/ExportController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ExportController\:\:articlesCsv\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ExportController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ImportController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/ImportController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ImportController\:\:categories\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/ImportController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\MediaController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/MediaController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Jobs\\ImageOptimizeJob\:\:dispatch\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/MediaController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MediaController\:\:uploadCover\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/MediaController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MediaController\:\:uploadGallery\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/MediaController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MenuController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/MenuController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MenuController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/MenuController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/NotificationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/NotificationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:markAsRead\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/NotificationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:unreadCount\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/NotificationController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\PageController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PageController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PageController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PageController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PageController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PageController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PageController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PageController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PageController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PageController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PasswordResetController\:\:reset\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PasswordResetController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PasswordResetController\:\:sendLink\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/PasswordResetController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SearchController\:\:__invoke\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken\:\:\$tokenable_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/SessionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SessionController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SessionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SessionController\:\:destroyOthers\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SessionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SessionController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SessionController.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type Laravel\\Sanctum\\PersonalAccessToken\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/V1/SessionController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SettingController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SettingController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SettingController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/SettingController.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\TagController\:\:middleware\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TagController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:hasRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\:\:hasRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:disable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:enable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:qrcode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:verifyCode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:verifyLogin\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/Api/V1/TwoFactorController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\SitemapController\:\:__invoke\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/SitemapController.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\Authenticate not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Kernel.php
+
+		-
+			message: '#^Class App\\Http\\Middleware\\RedirectIfAuthenticated not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Kernel.php
+
+		-
+			message: '#^Class Spatie\\Permission\\Middlewares\\PermissionMiddleware not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Kernel.php
+
+		-
+			message: '#^Class Spatie\\Permission\\Middlewares\\RoleMiddleware not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Kernel.php
+
+		-
+			message: '#^Class Spatie\\Permission\\Middlewares\\RoleOrPermissionMiddleware not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Kernel.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\AuditMutation\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/AuditMutation.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\CacheHeadersMiddleware\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/CacheHeadersMiddleware.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\CacheHeadersMiddleware\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/CacheHeadersMiddleware.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ETagMiddleware\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/ETagMiddleware.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ETagMiddleware\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/ETagMiddleware.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\EnsureNotCommentBanned\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/EnsureNotCommentBanned.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\EnsureNotCommentBanned\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/EnsureNotCommentBanned.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ForceJsonResponse\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/ForceJsonResponse.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ForceJsonResponse\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/ForceJsonResponse.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\RequestIdMiddleware\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/RequestIdMiddleware.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\RequestIdMiddleware\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/RequestIdMiddleware.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 1
+			path: app/Http/Middleware/SecurityHeaders.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\SecurityHeaders\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/SecurityHeaders.php
+
+		-
+			message: '#^Call to an undefined method Psr\\Log\\LoggerInterface\:\:getProcessors\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/SentryContext.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\SentryContext\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/SentryContext.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\SentryContext\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/SentryContext.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Psr\\Log\\LoggerInterface\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Middleware/SentryContext.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\SetLocaleFromHeader\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/SetLocaleFromHeader.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\SetLocaleFromHeader\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/SetLocaleFromHeader.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ThrottlePerRole\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/ThrottlePerRole.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ThrottlePerRole\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/ThrottlePerRole.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\TrackArticleView\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/TrackArticleView.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\TrackArticleView\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/TrackArticleView.php
+
+		-
+			message: '#^Function ref_host not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: app/Http/Middleware/TrackReferrer.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\TrackReferrer\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/TrackReferrer.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\TrackReferrer\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/TrackReferrer.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ValidateJson\:\:handle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Middleware/ValidateJson.php
+
+		-
+			message: '#^Method App\\Http\\Middleware\\ValidateJson\:\:handle\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Http/Middleware/ValidateJson.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\Api\\V1\\ArticleCollection\:\:currentPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\Api\\V1\\ArticleCollection\:\:perPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleCollection.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\Api\\V1\\ArticleCollection\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleCollection.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$author\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$body\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$cover_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$language\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$published_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$reading_time\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$summary\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\ArticleResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$parent_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CategoryResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CategoryResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CommentResource\:\:\$body\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CommentResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CommentResource\:\:\$guest_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CommentResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\CommentResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Api/V1/CommentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\MenuResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/MenuResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$body\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$meta\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\PageResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/PageResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\TagResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/TagResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\TagResource\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/TagResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\TagResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/TagResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\Api\\V1\\TagResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/V1/TagResource.php
+
+		-
+			message: '#^Parameter \#1 \$driver of class Intervention\\Image\\ImageManager constructor expects Intervention\\Image\\Interfaces\\DriverInterface\|string, array\<string, string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/ImageOptimizeJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumb_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessArticleMedia.php
+
+		-
+			message: '#^Parameter \#1 \$article of class App\\Events\\ArticlePublished constructor expects App\\Models\\Article, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/PublishScheduledArticles.php
+
+		-
+			message: '#^Instantiated class App\\Mail\\WeeklyDigest not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendWeeklyDigest.php
+
+		-
+			message: '#^Parameter \#1 \$mailable of method Illuminate\\Mail\\PendingMail\:\:queue\(\) expects Illuminate\\Contracts\\Mail\\Mailable, App\\Mail\\WeeklyDigest given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/SendWeeklyDigest.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Listeners/NotifyEditorsNewComment.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Listeners/SendArticlePublishedNotifications.php
+
+		-
+			message: '#^Method App\\Mail\\WeeklyDigestMail\:\:build\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Mail/WeeklyDigestMail.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$category\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumb_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Class App\\Models\\Article uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:author\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:category\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:comments\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:scopeFeatured\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:scopeFeatured\(\) has parameter \$q with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:scopePublished\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:scopePublished\(\) has parameter \$q with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:setBodyAttribute\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:setSlugAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:setSlugAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:tags\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\AuthorProfile\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/AuthorProfile.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:articles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:children\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:parent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:setSlugAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Category\:\:setSlugAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Category.php
+
+		-
+			message: '#^Method App\\Models\\Comment\:\:article\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Method App\\Models\\Comment\:\:scopeApproved\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Method App\\Models\\Comment\:\:scopeApproved\(\) has parameter \$q with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Method App\\Models\\Comment\:\:setBodyAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Method App\\Models\\Comment\:\:user\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Comment.php
+
+		-
+			message: '#^Method App\\Models\\News\:\:category\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/News.php
+
+		-
+			message: '#^Method App\\Models\\News\:\:comments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/News.php
+
+		-
+			message: '#^Method App\\Models\\News\:\:histories\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/News.php
+
+		-
+			message: '#^Method App\\Models\\News\:\:images\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/News.php
+
+		-
+			message: '#^Method App\\Models\\News\:\:tags\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/News.php
+
+		-
+			message: '#^Method App\\Models\\NewsHistory\:\:editor\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/NewsHistory.php
+
+		-
+			message: '#^Method App\\Models\\NewsHistory\:\:news\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/NewsHistory.php
+
+		-
+			message: '#^Method App\\Models\\NewsImage\:\:news\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/NewsImage.php
+
+		-
+			message: '#^Method App\\Models\\Page\:\:setBodyAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Page.php
+
+		-
+			message: '#^Method App\\Models\\Series\:\:articles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Series.php
+
+		-
+			message: '#^Method App\\Models\\Series\:\:setSlugAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Series.php
+
+		-
+			message: '#^Method App\\Models\\Series\:\:setSlugAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Series.php
+
+		-
+			message: '#^Method App\\Models\\Tag\:\:articles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^Method App\\Models\\Tag\:\:setSlugAttribute\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^Method App\\Models\\Tag\:\:setSlugAttribute\(\) has parameter \$v with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^PHPDoc tag @use has invalid type Database\\Factories\\UserFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Type Database\\Factories\\UserFactory in generic type Illuminate\\Database\\Eloquent\\Factories\\HasFactory\<Database\\Factories\\UserFactory\> in PHPDoc tag @use is not subtype of template type TFactory of Illuminate\\Database\\Eloquent\\Factories\\Factory of trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$author\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/ArticlePublished.php
+
+		-
+			message: '#^Method App\\Notifications\\ArticlePublished\:\:toDatabase\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/ArticlePublished.php
+
+		-
+			message: '#^Method App\\Notifications\\ArticlePublished\:\:toMail\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/ArticlePublished.php
+
+		-
+			message: '#^Method App\\Notifications\\ArticlePublished\:\:via\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/ArticlePublished.php
+
+		-
+			message: '#^Method App\\Notifications\\NewCommentSubmitted\:\:toDatabase\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/NewCommentSubmitted.php
+
+		-
+			message: '#^Method App\\Notifications\\NewCommentSubmitted\:\:toMail\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/NewCommentSubmitted.php
+
+		-
+			message: '#^Method App\\Notifications\\NewCommentSubmitted\:\:via\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/NewCommentSubmitted.php
+
+		-
+			message: '#^Method App\\Notifications\\WeeklyDigest\:\:toMail\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/WeeklyDigest.php
+
+		-
+			message: '#^Method App\\Notifications\\WeeklyDigest\:\:via\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Notifications/WeeklyDigest.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:hasAnyRole\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:hasRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\ArticlePolicy\:\:delete\(\) has parameter \$article with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\ArticlePolicy\:\:publish\(\) has parameter \$article with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\ArticlePolicy\:\:update\(\) has parameter \$article with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\ArticlePolicy\:\:view\(\) has parameter \$article with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\ArticlePolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/ArticlePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:create\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:delete\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:forceDelete\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:restore\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:update\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:view\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\BaseResourcePolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/BaseResourcePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CategoryPolicy\:\:view\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CategoryPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CategoryPolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CategoryPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:approve\(\) has parameter \$comment with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:create\(\) has parameter \$comment with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:delete\(\) has parameter \$comment with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:reject\(\) has parameter \$comment with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:update\(\) has parameter \$comment with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:view\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\CommentPolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\MenuPolicy\:\:update\(\) has parameter \$menu with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/MenuPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\PagePolicy\:\:view\(\) has parameter \$page with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/PagePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\PagePolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/PagePolicy.php
+
+		-
+			message: '#^Method App\\Policies\\SettingPolicy\:\:update\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/SettingPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\SettingPolicy\:\:view\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/SettingPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\SettingPolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/SettingPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\TagPolicy\:\:view\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/TagPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\TagPolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/TagPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\UserPolicy\:\:assignRole\(\) has parameter \$target with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/UserPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\UserPolicy\:\:view\(\) has parameter \$target with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/UserPolicy.php
+
+		-
+			message: '#^Method App\\Policies\\UserPolicy\:\:viewAny\(\) has parameter \$model with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Policies/UserPolicy.php
+
+		-
+			message: '#^App\\Providers\\RouteServiceProvider\:\:boot\(\) calls parent\:\:boot\(\) but App\\Providers\\RouteServiceProvider does not extend any class\.$#'
+			identifier: class.noParent
+			count: 1
+			path: app/Providers/RouteServiceProvider.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: app/Providers/RouteServiceProvider.php
+
+		-
+			message: '#^Method App\\Repositories\\EloquentArticleRepository\:\:paginate\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/EloquentArticleRepository.php
+
+		-
+			message: '#^Relation ''author'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/EloquentArticleRepository.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/EloquentArticleRepository.php
+
+		-
+			message: '#^Relation ''tags'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/EloquentArticleRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\EloquentCategoryRepository\:\:allActive\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/EloquentCategoryRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\EloquentCommentRepository\:\:listApprovedForArticle\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/EloquentCommentRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Comment model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/EloquentCommentRepository.php
+
+		-
+			message: '#^Method App\\Repositories\\EloquentTagRepository\:\:allActive\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Repositories/EloquentTagRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$category\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ArticleService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$tags\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/ArticleService.php
+
+		-
+			message: '#^Function estimate_minutes not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: app/Services/ArticleService.php
+
+		-
+			message: '#^Method App\\Services\\ArticleService\:\:list\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/ArticleService.php
+
+		-
+			message: '#^Method App\\Services\\AuditLogger\:\:log\(\) has parameter \$target with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Services/AuditLogger.php
+
+		-
+			message: '#^Method App\\Services\\CategoryService\:\:all\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CategoryService.php
+
+		-
+			message: '#^Method App\\Services\\CategoryService\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CategoryService.php
+
+		-
+			message: '#^Method App\\Services\\CategoryService\:\:findBySlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CategoryService.php
+
+		-
+			message: '#^Method App\\Services\\CategoryService\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CategoryService.php
+
+		-
+			message: '#^Method App\\Services\\CommentService\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CommentService.php
+
+		-
+			message: '#^Method App\\Services\\CommentService\:\:listForArticle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CommentService.php
+
+		-
+			message: '#^Method App\\Services\\CommentService\:\:setStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/CommentService.php
+
+		-
+			message: '#^Call to an undefined method Intervention\\Image\\Interfaces\\ImageInterface\:\:orientate\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Services/MediaProcessor.php
+
+		-
+			message: '#^Relation ''author'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Services/RssFeedService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/RssFeedService.php
+
+		-
+			message: '#^Method App\\Services\\TagService\:\:all\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/TagService.php
+
+		-
+			message: '#^Method App\\Services\\TagService\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/TagService.php
+
+		-
+			message: '#^Method App\\Services\\TagService\:\:findBySlug\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/TagService.php
+
+		-
+			message: '#^Method App\\Services\\TagService\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Services/TagService.php
+
+		-
+			message: '#^Method App\\Support\\ApiResponse\:\:error\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Support/ApiResponse.php
+
+		-
+			message: '#^Method App\\Support\\ApiResponse\:\:error\(\) has parameter \$errors with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Support/ApiResponse.php
+
+		-
+			message: '#^Method App\\Support\\ApiResponse\:\:ok\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Support/ApiResponse.php
+
+		-
+			message: '#^Method App\\Support\\ApiResponse\:\:ok\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Support/ApiResponse.php
+
+		-
+			message: '#^Access to an undefined property DOMNameSpaceNode\|DOMNode\:\:\$ownerElement\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Support/HtmlSanitizer.php
+
+		-
+			message: '#^Function App\\Support\\err\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Function App\\Support\\err\(\) has parameter \$errors with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Function App\\Support\\ok\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Function App\\Support\\ok\(\) has parameter \$data with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Function App\\Support\\page_payload\(\) has parameter \$paginator with generic class Illuminate\\Pagination\\LengthAwarePaginator but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Category\:\:factory\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: database/factories/ArticleFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\ArticleFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/ArticleFactory.php
+
+		-
+			message: '#^Method Database\\Factories\\ArticleFactory\:\:draft\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: database/factories/ArticleFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\CategoryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/CategoryFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\CommentFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/CommentFactory.php
+
+		-
+			message: '#^Class Database\\Factories\\TagFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: database/factories/TagFactory.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:assignRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: database/seeders/RolesAndPermissionsSeeder.php
+
+		-
+			message: '#^Call to static method firstOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Permission\.$#'
+			identifier: class.notFound
+			count: 1
+			path: database/seeders/RolesAndPermissionsSeeder.php
+
+		-
+			message: '#^Call to static method firstOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Role\.$#'
+			identifier: class.notFound
+			count: 1
+			path: database/seeders/RolesAndPermissionsSeeder.php
+
+		-
+			message: '#^Class Spatie\\Permission\\PermissionRegistrar not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: database/seeders/RolesAndPermissionsSeeder.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Category\:\:factory\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Function expect not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Function it not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Function userWithPermissions not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Undefined variable\: \$this$#'
+			identifier: variable.undefined
+			count: 2
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Api/CommentApiTest.php
+
+		-
+			message: '#^Function expect not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: tests/Feature/Api/CommentApiTest.php
+
+		-
+			message: '#^Function it not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Feature/Api/CommentApiTest.php
+
+		-
+			message: '#^Undefined variable\: \$this$#'
+			identifier: variable.undefined
+			count: 1
+			path: tests/Feature/Api/CommentApiTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Policies/ArticlePolicyTest.php
+
+		-
+			message: '#^Function it not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Feature/Policies/ArticlePolicyTest.php
+
+		-
+			message: '#^Function userWithPermissions not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Feature/Policies/ArticlePolicyTest.php
+
+		-
+			message: '#^Undefined variable\: \$this$#'
+			identifier: variable.undefined
+			count: 2
+			path: tests/Feature/Policies/ArticlePolicyTest.php
+
+		-
+			message: '#^Call to static method findOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Permission\.$#'
+			identifier: class.notFound
+			count: 1
+			path: tests/Pest.php
+
+		-
+			message: '#^Function uses not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Pest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/ExampleTest.php
+
+		-
+			message: '#^Function expect not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Unit/HtmlSanitizerTest.php
+
+		-
+			message: '#^Function it not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: tests/Unit/HtmlSanitizerTest.php

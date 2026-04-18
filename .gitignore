@@ -18,7 +18,11 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/phpstan-output.txt
+/storage/pint-output.txt
+/storage/framework/cache/phpstan
 /vendor
+.phpstan.cache
 Homestead.json
 Homestead.yaml
 Thumbs.db
