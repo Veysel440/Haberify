@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\DTO\Comment;
@@ -19,15 +20,19 @@ final readonly class CreateCommentData
     public static function from(array $v): self
     {
         return new self(
-            article_id: (int)$v['article_id'],
-            user_id: isset($v['user_id']) ? (int)$v['user_id'] : null,
-            body: (string)$v['body'],
+            article_id: (int) $v['article_id'],
+            user_id: isset($v['user_id']) ? (int) $v['user_id'] : null,
+            body: (string) $v['body'],
             name: $v['name'] ?? null,
             email: $v['email'] ?? null,
-            status: (string)($v['status'] ?? 'pending'),
+            status: (string) ($v['status'] ?? 'pending'),
             ip: $v['ip'] ?? null,
             ua: $v['ua'] ?? null,
         );
     }
-    public function toArray(): array { return get_object_vars($this); }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
+    }
 }

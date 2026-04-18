@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exports;
 
 use App\Models\Article;
@@ -10,11 +12,11 @@ class ArticlesExport implements FromQuery, WithHeadings
 {
     public function query()
     {
-        return Article::query()->select('id','title','slug','status','published_at','language');
+        return Article::query()->select('id', 'title', 'slug', 'status', 'published_at', 'language');
     }
 
     public function headings(): array
     {
-        return ['id','title','slug','status','published_at','language'];
+        return ['id', 'title', 'slug', 'status', 'published_at', 'language'];
     }
 }

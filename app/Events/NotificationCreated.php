@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,11 +15,17 @@ class NotificationCreated implements ShouldBroadcast
     public function __construct(public int $userId, public array $payload) {}
 
     public function broadcastOn(): array
-    { return [new PrivateChannel("notifications.{$this->userId}")]; }
+    {
+        return [new PrivateChannel("notifications.{$this->userId}")];
+    }
 
     public function broadcastAs(): string
-    { return 'NotificationPushed'; }
+    {
+        return 'NotificationPushed';
+    }
 
     public function broadcastWith(): array
-    { return $this->payload; }
+    {
+        return $this->payload;
+    }
 }

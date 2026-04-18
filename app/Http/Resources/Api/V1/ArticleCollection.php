@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Api\V1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -12,10 +14,10 @@ class ArticleCollection extends ResourceCollection
     {
         return [
             'items' => $this->collection,
-            'meta'  => [
+            'meta' => [
                 'current_page' => $this->currentPage(),
-                'per_page'     => $this->perPage(),
-                'total'        => $this->total(),
+                'per_page' => $this->perPage(),
+                'total' => $this->total(),
             ],
         ];
     }

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class AuditLog extends Model
 {
-    protected $fillable = ['user_id','action','target_type','target_id','ip','ua','route','meta'];
-    protected $casts = ['meta'=>'array'];
+    protected $fillable = ['user_id', 'action', 'target_type', 'target_id', 'ip', 'ua', 'route', 'meta'];
+
+    protected $casts = ['meta' => 'array'];
 }

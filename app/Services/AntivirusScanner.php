@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
@@ -14,8 +16,9 @@ class AntivirusScanner
         $out = [];
         $code = 0;
         exec($cmd, $out, $code);
+
         if ($code === 1) {
-            throw new RuntimeException("infected: ".$path);
+            throw new RuntimeException('infected: ' . $path);
         }
     }
 }
