@@ -4,109 +4,138 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\DTO\TwoFactor\LoginAttemptResult;
+use App\DTO\TwoFactor\TwoFactorChallengeResult;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\TwoFactor\VerifyCodeRequest;
+use App\Http\Requests\Api\V1\TwoFactor\VerifyLoginRequest;
+use App\Http\Responses\ApiResponse;
+use App\Models\User;
+use App\Services\TwoFactor\TwoFactorService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
-use PragmaRX\Google2FA\Google2FA;
+use Symfony\Component\HttpFoundation\Response as HttpStatus;
 
-class TwoFactorController extends Controller
+/**
+ * Pure plumbing: parse request → call service → translate result to HTTP.
+ *
+ * All 2FA business rules (encryption, rate limiting, TOTP verification,
+ * token issuance, ability mapping) live in `App\Services\TwoFactor`.
+ */
+final class TwoFactorController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly TwoFactorService $twoFactor) {}
+
+    public function enable(Request $request): ApiResponse
     {
-        //
+        $enrollment = $this->twoFactor->enroll($this->authenticatedUser($request));
+
+        return ApiResponse::created($enrollment->toArray());
     }
 
-    public function enable(Request $r)
+    public function qrcode(Request $request): ApiResponse|JsonResponse
     {
-        $u = $r->user();
-        $g2fa = new Google2FA();
-        $secret = $g2fa->generateSecretKey();
+        $url = $this->twoFactor->otpAuthUrlFor($this->authenticatedUser($request));
 
-        $u->forceFill([
-            'two_factor_secret' => encrypt($secret),
-            'two_factor_recovery_codes' => encrypt(json_encode(collect(range(1,8))->map(fn()=>Str::random(10))->all())),
-            'two_factor_confirmed_at' => null,
-        ])->save();
+        if ($url === null) {
+            return ApiResponse::error('Two-factor not enrolled.', 'two_factor.not_enrolled', HttpStatus::HTTP_NOT_FOUND)
+                ->toResponse($request);
+        }
 
-        return response()->json(['data'=>[
-            'secret'=>$secret,
-            'otpauth_url'=>$g2fa->getQRCodeUrl(config('app.name'), $u->email, $secret),
-        ]], 201);
+        return ApiResponse::ok(['otpauth_url' => $url]);
     }
 
-    public function qrcode(Request $r)
+    public function verifyLogin(VerifyLoginRequest $request): ApiResponse|JsonResponse
     {
-        $u = $r->user();
-        abort_if(!$u->two_factor_secret, 404);
-        $secret = decrypt($u->two_factor_secret);
-        $g2fa = new Google2FA();
-        return response()->json(['data'=>[
-            'otpauth_url'=>$g2fa->getQRCodeUrl(config('app.name'), $u->email, $secret),
-        ]]);
+        $result = $this->twoFactor->attemptLogin(
+            email: (string) $request->validated('email'),
+            password: (string) $request->validated('password'),
+            ip: (string) $request->ip(),
+        );
+
+        return $this->loginResultToResponse($result, $request);
     }
 
-    public function verifyLogin(Request $r)
+    public function verifyCode(VerifyCodeRequest $request): ApiResponse|JsonResponse
     {
-        $data = $r->validate(['email'=>'required|email','password'=>'required']);
-        $key = 'login:'.Str::lower($data['email']).':'.$r->ip();
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            return response()->json(['message'=>'Çok fazla deneme. Daha sonra deneyin.'], 429);
-        }
+        $result = $this->twoFactor->verifyChallenge(
+            challengeToken: (string) $request->validated('tmp'),
+            code: (string) $request->validated('code'),
+            ip: (string) $request->ip(),
+        );
 
-        if (!auth()->validate($data)) {
-            RateLimiter::hit($key, 60);
-            return response()->json(['message'=>'Geçersiz bilgiler'], 422);
-        }
-        RateLimiter::clear($key);
-
-        $u = \App\Models\User::where('email',$data['email'])->firstOrFail();
-
-        if (!$u->two_factor_secret) {
-            auth()->attempt($data);
-            $abilities = $u->hasRole('admin') ? ['*'] : ['articles:read','comments:create','me:read'];
-            return response()->json(['data'=>['token'=>$u->createToken('api', $abilities)->plainTextToken]]);
-        }
-
-        return response()->json(['data'=>[
-            'requires_2fa'=>true,
-            'tmp'=>encrypt(['id'=>$u->id,'ts'=>now()->timestamp])
-        ]]);
+        return $this->challengeResultToResponse($result, $request);
     }
 
-    public function verifyCode(Request $r)
+    public function disable(Request $request): JsonResponse
     {
-        $d = $r->validate(['tmp'=>'required','code'=>'required|string']);
-        $payload = decrypt($d['tmp']);
-        $u = \App\Models\User::findOrFail($payload['id']);
+        $this->twoFactor->disable($this->authenticatedUser($request));
 
-        $key = '2fa:'.$u->id.':'.$r->ip();
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            return response()->json(['message'=>'2FA kilitlendi, sonra deneyin'], 429);
-        }
-
-        $secret = decrypt($u->two_factor_secret);
-        $g2fa = new Google2FA();
-
-        if (!$g2fa->verifyKey($secret, $d['code'])) {
-            RateLimiter::hit($key, 60);
-            return response()->json(['message'=>'Kod hatalı'], 422);
-        }
-        RateLimiter::clear($key);
-
-        $u->forceFill(['two_factor_confirmed_at'=>now()])->save();
-        $abilities = $u->hasRole('admin') ? ['*'] : ['articles:read','comments:create','me:read'];
-        return response()->json(['data'=>['token'=>$u->createToken('api', $abilities)->plainTextToken]]);
+        return ApiResponse::noContent();
     }
 
-    public function disable(Request $r)
+    private function loginResultToResponse(LoginAttemptResult $result, Request $request): ApiResponse|JsonResponse
     {
-        $u = $r->user();
-        $u->forceFill([
-            'two_factor_secret'=>null,
-            'two_factor_recovery_codes'=>null,
-            'two_factor_confirmed_at'=>null,
-        ])->save();
-        return response()->noContent();
+        return match ($result->status) {
+            LoginAttemptResult::STATUS_RATE_LIMITED => ApiResponse::error(
+                'Too many attempts. Try again later.',
+                'auth.rate_limited',
+                HttpStatus::HTTP_TOO_MANY_REQUESTS,
+            )->toResponse($request),
+
+            LoginAttemptResult::STATUS_INVALID_CREDENTIALS => ApiResponse::error(
+                'Invalid credentials.',
+                'auth.invalid_credentials',
+                HttpStatus::HTTP_UNPROCESSABLE_ENTITY,
+            )->toResponse($request),
+
+            LoginAttemptResult::STATUS_REQUIRES_TWO_FACTOR => ApiResponse::ok([
+                'requires_2fa' => true,
+                'tmp' => $result->challengeToken,
+            ]),
+
+            LoginAttemptResult::STATUS_AUTHENTICATED => ApiResponse::ok(['token' => $result->token]),
+
+            default => ApiResponse::error('Unknown auth state.', 'auth.unknown', HttpStatus::HTTP_INTERNAL_SERVER_ERROR)
+                ->toResponse($request),
+        };
+    }
+
+    private function challengeResultToResponse(TwoFactorChallengeResult $result, Request $request): ApiResponse|JsonResponse
+    {
+        return match ($result->status) {
+            TwoFactorChallengeResult::STATUS_RATE_LIMITED => ApiResponse::error(
+                'Two-factor locked. Try again later.',
+                'two_factor.rate_limited',
+                HttpStatus::HTTP_TOO_MANY_REQUESTS,
+            )->toResponse($request),
+
+            TwoFactorChallengeResult::STATUS_INVALID_CHALLENGE => ApiResponse::error(
+                'Challenge expired or invalid.',
+                'two_factor.invalid_challenge',
+                HttpStatus::HTTP_UNPROCESSABLE_ENTITY,
+            )->toResponse($request),
+
+            TwoFactorChallengeResult::STATUS_INVALID_CODE => ApiResponse::error(
+                'Invalid code.',
+                'two_factor.invalid_code',
+                HttpStatus::HTTP_UNPROCESSABLE_ENTITY,
+            )->toResponse($request),
+
+            TwoFactorChallengeResult::STATUS_AUTHENTICATED => ApiResponse::ok(['token' => $result->token]),
+
+            default => ApiResponse::error('Unknown 2FA state.', 'two_factor.unknown', HttpStatus::HTTP_INTERNAL_SERVER_ERROR)
+                ->toResponse($request),
+        };
+    }
+
+    private function authenticatedUser(Request $request): User
+    {
+        /** @var User|null $user */
+        $user = $request->user();
+
+        abort_if($user === null, HttpStatus::HTTP_UNAUTHORIZED);
+
+        return $user;
     }
 }
