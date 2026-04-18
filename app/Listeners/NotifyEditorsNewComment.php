@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners;
 
 use App\Events\CommentSubmitted;
@@ -11,7 +13,7 @@ class NotifyEditorsNewComment implements ShouldQueue
 {
     public function handle(CommentSubmitted $event): void
     {
-        User::role(['editor','admin'])->chunkById(500, function($users) use ($event){
+        User::role(['editor', 'admin'])->chunkById(500, function ($users) use ($event) {
             foreach ($users as $u) {
                 $u->notify(new NewCommentSubmitted($event->article, $event->comment));
             }

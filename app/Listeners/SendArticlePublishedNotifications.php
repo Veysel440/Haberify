@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners;
 
 use App\Events\ArticlePublished;
@@ -11,7 +13,7 @@ class SendArticlePublishedNotifications implements ShouldQueue
 {
     public function handle(ArticlePublished $event): void
     {
-        User::role('subscriber')->chunkById(500, function($users) use ($event){
+        User::role('subscriber')->chunkById(500, function ($users) use ($event) {
             foreach ($users as $u) {
                 $u->notify(new ArticlePublishedNotification($event->article));
             }

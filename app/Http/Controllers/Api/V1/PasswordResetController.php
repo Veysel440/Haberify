@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Auth\Events\PasswordReset;
@@ -12,33 +14,34 @@ class PasswordResetController extends Controller
 {
     public function sendLink(Request $r)
     {
-        $r->validate(['email'=>'required|email']);
+        $r->validate(['email' => 'required|email']);
         $status = Password::sendResetLink($r->only('email'));
+
         return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message'=>__($status)])
-            : response()->json(['message'=>__($status)], 422);
+            ? response()->json(['message' => __($status)])
+            : response()->json(['message' => __($status)], 422);
     }
 
     public function reset(Request $r)
     {
         $r->validate([
-            'token'=>'required',
-            'email'=>'required|email',
-            'password'=>'required|confirmed|min:8'
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
         ]);
 
         $status = Password::reset(
-            $r->only('email','password','password_confirmation','token'),
+            $r->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->forceFill(['password'=>bcrypt($password),'remember_token'=>Str::random(60)])->save();
+                $user->forceFill(['password' => bcrypt($password), 'remember_token' => Str::random(60)])->save();
                 event(new PasswordReset($user));
                 // Tüm tokenları iptal et
                 $user->tokens()->delete();
-            }
+            },
         );
 
         return $status === Password::PASSWORD_RESET
-            ? response()->json(['message'=>__($status)])
-            : response()->json(['message'=>__($status)], 422);
+            ? response()->json(['message' => __($status)])
+            : response()->json(['message' => __($status)], 422);
     }
 }

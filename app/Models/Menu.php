@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models;
+declare(strict_types=1);
 
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable = ['name','items'];
-    protected $casts = ['items'=>'array'];
+    protected $fillable = ['name', 'items'];
+
+    protected $casts = ['items' => 'array'];
 }

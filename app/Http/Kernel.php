@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -45,7 +47,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
 
             // Rate limit (rol bazlı)
-            \App\Http\Middleware\ThrottlePerRole::class.':api,120,60',
+            \App\Http\Middleware\ThrottlePerRole::class . ':api,120,60',
 
             // ETag ve binding
             \App\Http\Middleware\CacheHeadersMiddleware::class,
@@ -62,22 +64,20 @@ class Kernel extends HttpKernel
      * Route middleware aliases.
      */
     protected $middlewareAliases = [
-        'auth'              => \App\Http\Middleware\Authenticate::class,
-        'auth.basic'        => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'auth.session'      => \Illuminate\Session\Middleware\AuthenticateSession::class,
-        'cache.headers'     => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'can'               => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest'             => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'password.confirm'  => \Illuminate\Auth\Middleware\RequirePassword::class,
-        'signed'            => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle'          => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified'          => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-
-        'role'        => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission'  => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-        'roles_or'    => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'roles_or' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 
         'comment.notbanned' => \App\Http\Middleware\EnsureNotCommentBanned::class,
     ];

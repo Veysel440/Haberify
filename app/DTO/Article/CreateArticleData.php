@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\DTO\Article;
+
+use Str;
 
 final readonly class CreateArticleData
 {
@@ -24,7 +27,7 @@ final readonly class CreateArticleData
             author_id: (int) $v['author_id'],
             category_id: (int) $v['category_id'],
             title: (string) $v['title'],
-            slug: (string) ($v['slug'] ?? \Str::slug($v['title'])),
+            slug: (string) ($v['slug'] ?? Str::slug($v['title'])),
             summary: $v['summary'] ?? null,
             body: $v['body'] ?? null,
             status: (string) ($v['status'] ?? 'draft'),
@@ -33,5 +36,8 @@ final readonly class CreateArticleData
         );
     }
 
-    public function toArray(): array { return get_object_vars($this); }
+    public function toArray(): array
+    {
+        return get_object_vars($this);
+    }
 }

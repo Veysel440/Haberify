@@ -26,7 +26,7 @@ class SecurityHeaders
     private function buildContentSecurityPolicy(): string
     {
         $extraConnect = $this->envList('CSP_CONNECT_SRC');
-        $extraImg     = $this->envList('CSP_IMG_SRC');
+        $extraImg = $this->envList('CSP_IMG_SRC');
 
         $directives = [
             "default-src 'self'",
@@ -36,9 +36,9 @@ class SecurityHeaders
             "object-src 'none'",
             "script-src 'self' 'unsafe-inline'",
             "style-src 'self' 'unsafe-inline'",
-            "img-src " . trim("'self' data: https: " . implode(' ', $extraImg)),
+            'img-src ' . trim("'self' data: https: " . implode(' ', $extraImg)),
             "font-src 'self' data:",
-            "connect-src " . trim("'self' " . implode(' ', $extraConnect)),
+            'connect-src ' . trim("'self' " . implode(' ', $extraConnect)),
         ];
 
         return implode('; ', $directives);

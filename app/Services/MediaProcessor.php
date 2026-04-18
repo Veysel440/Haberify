@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class MediaProcessor
 {
     public function __construct(
-        private ImageManager $img = new ImageManager(new Driver())
+        private ImageManager $img = new ImageManager(new Driver),
     ) {}
 
     /**
@@ -22,12 +23,12 @@ class MediaProcessor
 
         // Cover
         $cover = $this->img->read($bytes)->orientate()->cover($coverW, $coverH, 'center');
-        $coverPath = trim($dstDir,'/').'/cover.webp';
+        $coverPath = trim($dstDir, '/') . '/cover.webp';
         Storage::disk($disk)->put($coverPath, (string) $cover->toWebp(85));
 
         // Thumb
         $thumb = $this->img->read($bytes)->orientate()->cover($thumbW, $thumbH, 'center');
-        $thumbPath = trim($dstDir,'/').'/thumb.webp';
+        $thumbPath = trim($dstDir, '/') . '/thumb.webp';
         Storage::disk($disk)->put($thumbPath, (string) $thumb->toWebp(85));
 
         return ['cover' => $coverPath, 'thumb' => $thumbPath];

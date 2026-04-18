@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Support\Traits\SanitizesHtml;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Comment extends Model
 {
-    use SoftDeletes, SanitizesHtml;
+    use SanitizesHtml, SoftDeletes;
 
-    protected $fillable = ['article_id','user_id','guest_name','body','status','ip','ua'];
+    protected $fillable = ['article_id', 'user_id', 'guest_name', 'body', 'status', 'ip', 'ua'];
 
-    protected $casts = [ 'created_at'=>'datetime', 'updated_at'=>'datetime' ];
+    protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function article()
     {
         return $this->belongsTo(Article::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -24,10 +28,11 @@ class Comment extends Model
 
     public function scopeApproved($q)
     {
-        return $q->where('status','approved');
+        return $q->where('status', 'approved');
     }
+
     public function setBodyAttribute($v): void
     {
-        $this->attributes['body'] = strip_tags((string)$v);
+        $this->attributes['body'] = strip_tags((string) $v);
     }
 }

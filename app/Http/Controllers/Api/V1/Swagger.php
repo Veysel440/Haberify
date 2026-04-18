@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 /**
  * @OA\Info(title="Haberify API", version="1.0.0")
+ *
  * @OA\Server(url="/", description="Base")
+ *
  * @OA\SecurityScheme(
  *   securityScheme="bearerAuth",
  *   type="http",

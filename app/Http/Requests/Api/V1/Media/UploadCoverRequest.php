@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\V1\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadCoverRequest extends FormRequest
 {
-    public function authorize(): bool { return $this->user()?->can('articles.update') ?? false; }
+    public function authorize(): bool
+    {
+        return $this->user()?->can('articles.update') ?? false;
+    }
+
     public function rules(): array
     {
         return [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\V1\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -7,13 +9,15 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreTagRequest extends FormRequest
 {
     public function authorize(): bool
-    { return $this->user()?->can('tags.manage') ?? false; }
+    {
+        return $this->user()?->can('tags.manage') ?? false;
+    }
 
     public function rules(): array
     {
         return [
-            'name'      => 'required|string|max:80',
-            'slug'      => 'nullable|string|max:100|unique:tags,slug',
+            'name' => 'required|string|max:80',
+            'slug' => 'nullable|string|max:100|unique:tags,slug',
             'is_active' => 'boolean',
         ];
     }

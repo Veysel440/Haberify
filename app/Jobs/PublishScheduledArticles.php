@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Models\Article;
@@ -14,9 +16,9 @@ class PublishScheduledArticles implements ShouldQueue
     public function handle(): void
     {
         $due = Article::query()
-            ->where('status','scheduled')
+            ->where('status', 'scheduled')
             ->whereNotNull('scheduled_at')
-            ->where('scheduled_at','<=', now())
+            ->where('scheduled_at', '<=', now())
             ->limit(200)
             ->get();
 
