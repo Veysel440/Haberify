@@ -128,7 +128,6 @@ Bu yapıyla yeni bir 2FA kanalı (SMS, WebAuthn, Push) eklemek istendiğinde mev
 | `AnalyticsService` | Overview / top-articles / referrers / category-share metrikleri. |
 | `MediaProcessor` | Medya optimizasyonu, `AntivirusScanner` entegrasyonu. |
 | `AntivirusScanner`, `VirusScanner` | ClamAV tarzı opsiyonel antivirüs taraması. |
-| `AuditLogger` | `spatie/laravel-activitylog` üzerine merkezî audit API’si. |
 | `RssFeedService`, `SitemapService` | RSS ve sitemap üretimi (cache’li). |
 | `VisitService` | Makale/site ziyaret takibi, günlük rollup. |
 
@@ -147,7 +146,8 @@ Bu yapıyla yeni bir 2FA kanalı (SMS, WebAuthn, Push) eklemek istendiğinde mev
   - `CacheHeadersMiddleware` + `ETagMiddleware` — koşullu `If-None-Match` / 304.
   - `SentryContext`, `RequestIdMiddleware` — izlenebilirlik.
   - `TrackArticleView`, `TrackReferrer` — analitik.
-  - `AuditMutation` — kritik mutasyonların otomatik audit girişi.
+
+> **Denetim izi** artık yalnızca `spatie/laravel-activitylog` üzerinden tutulur. İlgili modellere `LogsActivity` trait'i eklenerek değişiklikler `activity_log` tablosuna yazılır; `GET /api/v1/audit` ucu bu tabloyu okur.
 
 ### 2.5 Servis Sağlayıcıları
 
@@ -249,7 +249,7 @@ OWASP ASVS 4.0 §2.1 ve NIST SP 800-63B §5.1.1.2 rehberleriyle uyumludur. `Pass
   - `Referrer-Policy: no-referrer-when-downgrade`
   - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
 - **Antivirus/VirusScanner** — yüklenen medya için opsiyonel ClamAV taraması (`config/virus.php`).
-- **Audit Log** — kritik mutasyonlar (yayın, silme, rol değişikliği) `AuditMutation` middleware ve `spatie/laravel-activitylog` ile kayıt altına alınır.
+- **Audit Log** — kritik mutasyonlar (yayın, silme, rol değişikliği) `spatie/laravel-activitylog` üzerinden `activity_log` tablosuna yazılır; izlenecek model `LogsActivity` trait'ini uygular ve `getActivitylogOptions()` ile allowlist sağlar.
 
 ### 4.5 Oturum / Token Hijyeni
 
@@ -323,7 +323,6 @@ Diğer tablolardaki öne çıkan index’ler: `articles.is_featured`, `articles.
 - `MalwareScan` — antivirüs taraması.
 - `PublishScheduledArticles`, `PublishArticleJob` — zamanlanmış yayın.
 - `SendWeeklyDigest` — haftalık özet e-postaları.
-- `WriteAuditLog` — audit girişlerinin arka plan yazımı.
 
 `AppServiceProvider::boot` içindeki `Queue::failing` dinleyicisi başarısız job’ları hem Sentry’ye yollar hem de structured log’a düşer.
 

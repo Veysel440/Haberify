@@ -553,12 +553,6 @@ parameters:
 			path: app/Http/Kernel.php
 
 		-
-			message: '#^Method App\\Http\\Middleware\\AuditMutation\:\:handle\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Middleware/AuditMutation.php
-
-		-
 			message: '#^Method App\\Http\\Middleware\\CacheHeadersMiddleware\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -1535,12 +1529,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: app/Services/ArticleService.php
-
-		-
-			message: '#^Method App\\Services\\AuditLogger\:\:log\(\) has parameter \$target with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: app/Services/AuditLogger.php
 
 		-
 			message: '#^Method App\\Services\\CategoryService\:\:all\(\) has no return type specified\.$#'
