@@ -178,11 +178,61 @@ final class AuthEndpointsTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'me@example.com']);
 
-        $this->actingAs($user, 'sanctum')
+        $response = $this->actingAs($user, 'sanctum')
             ->getJson('/api/v1/auth/me')
             ->assertOk()
             ->assertJsonPath('success', true)
             ->assertJsonPath('data.email', 'me@example.com');
+
+        // UserResource allowlisted shape — if this ever grows to include
+        // raw model attributes, the `does not leak` test below will catch it.
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'id', 'name', 'email', 'avatar', 'bio', 'role', 'status',
+                'email_verified', 'two_factor_enabled', 'roles', 'permissions',
+                'created_at', 'updated_at',
+            ],
+        ]);
+
+        // Derived boolean, not the raw timestamp / cipher.
+        $response->assertJsonPath('data.two_factor_enabled', false);
+    }
+
+    public function test_me_does_not_leak_sensitive_user_columns(): void
+    {
+        // Seed a user with all the server-only columns populated so that
+        // any accidental `$user->toArray()` leak would show up in the JSON.
+        $user = User::factory()->create(['email' => 'leak@example.com']);
+        $user->forceFill([
+            'two_factor_secret' => 'encrypted-secret-cipher',
+            'two_factor_recovery_codes' => 'encrypted-codes-cipher',
+            'two_factor_confirmed_at' => now(),
+            'is_comment_banned' => true,
+            'comment_banned_until' => now()->addDay(),
+            'comment_ban_reason' => 'test',
+            'remember_token' => 'remember-me',
+        ])->save();
+
+        $response = $this->actingAs($user->fresh(), 'sanctum')
+            ->getJson('/api/v1/auth/me')
+            ->assertOk();
+
+        $payload = $response->json('data');
+
+        // None of these should ever leave the server.
+        $forbidden = [
+            'password', 'remember_token',
+            'two_factor_secret', 'two_factor_recovery_codes', 'two_factor_confirmed_at',
+            'is_comment_banned', 'comment_banned_until', 'comment_ban_reason',
+        ];
+
+        foreach ($forbidden as $key) {
+            $this->assertArrayNotHasKey($key, $payload, "Sensitive field `{$key}` leaked via /auth/me.");
+        }
+
+        // …but the safe, derived boolean must still be present and correct.
+        $this->assertTrue($payload['two_factor_enabled']);
     }
 
     private function passwordBroker(): PasswordBroker
