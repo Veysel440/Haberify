@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\RegisterRequest;
+use App\Http\Responses\ApiResponse;
 use App\Models\User;
-use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -18,10 +18,14 @@ use Illuminate\Support\Facades\Hash;
  * The login path lives in `TwoFactorController::verifyLogin` because every
  * authentication attempt must run through the 2FA challenge flow. A second
  * "plain login" here would be a silent bypass and is intentionally absent.
+ *
+ * All responses flow through `App\Http\Responses\ApiResponse` — the single
+ * project-wide JSON envelope. The legacy `App\Support\ApiResponse` shim is
+ * gone; do not reintroduce it.
  */
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request): ApiResponse
     {
         $data = $request->validated();
 
@@ -33,10 +37,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('api')->plainTextToken;
 
-        return ApiResponse::ok(['token' => $token]);
+        return ApiResponse::created(['token' => $token]);
     }
 
-    public function me(Request $request): JsonResponse
+    public function me(Request $request): ApiResponse
     {
         return ApiResponse::ok($request->user());
     }
@@ -45,6 +49,6 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return ApiResponse::ok();
+        return ApiResponse::noContent();
     }
 }
