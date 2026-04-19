@@ -63,6 +63,32 @@ final class AuthEndpointsTest extends TestCase
         $this->assertTrue(Hash::check('CorrectHorse-Battery!9Staple', $user->password));
     }
 
+    public function test_register_issues_token_with_configured_abilities_not_wildcard(): void
+    {
+        config()->set('twofactor.token.default_abilities', ['articles:read', 'comments:create', 'me:read']);
+        config()->set('twofactor.token.admin_abilities', ['*']);
+        config()->set('twofactor.token.name', 'api');
+
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'Non Admin',
+            'email' => 'regular@example.com',
+            'password' => 'CorrectHorse-Battery!9Staple',
+            'password_confirmation' => 'CorrectHorse-Battery!9Staple',
+        ])->assertCreated();
+
+        $user = User::where('email', 'regular@example.com')->firstOrFail();
+        /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+        $token = $user->tokens()->latest('id')->firstOrFail();
+
+        // A freshly-registered user MUST NOT receive the wildcard `*` ability.
+        // This guards the bug where AuthController::register bypassed
+        // SanctumTokenIssuer and called createToken('api') directly, which
+        // would have produced a token with `['*']` abilities.
+        $this->assertSame('api', $token->name);
+        $this->assertNotContains('*', $token->abilities);
+        $this->assertSame(['articles:read', 'comments:create', 'me:read'], $token->abilities);
+    }
+
     public function test_register_rejects_duplicate_email(): void
     {
         User::factory()->create(['email' => 'taken@example.com']);
