@@ -38,14 +38,15 @@ final readonly class SanctumTokenIssuer
 
     private function isAdmin(User $user): bool
     {
-        // `hasRole` is provided by spatie/laravel-permission when installed.
-        // Fall back to the column-based `role` attribute otherwise.
-        if (method_exists($user, 'hasRole')) {
-            /** @var bool */
-            return (bool) $user->hasRole('admin');
+        // spatie/laravel-permission is a hard dependency (see composer.json),
+        // so the `HasRoles` trait is always present on User. We still fall
+        // back to the column-based `role` attribute first so legacy rows
+        // with `role='admin'` but no assigned roles stay recognised.
+        if (($user->getAttribute('role') ?? null) === 'admin') {
+            return true;
         }
 
-        return ($user->getAttribute('role') ?? null) === 'admin';
+        return (bool) $user->hasRole('admin');
     }
 
     private function tokenName(): string

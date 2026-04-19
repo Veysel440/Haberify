@@ -21,22 +21,32 @@ final class HtmlSanitizer
         if (class_exists(HTMLPurifier::class)) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('Cache.DefinitionImpl', null);
-            $config->set('HTML.Doctype', 'HTML5');
-            $config->set('URI.DisableJavaScript', true);
+            // HTMLPurifier doesn't support an 'HTML5' doctype literal; XHTML 1.0 Transitional
+            // is the closest match that still allows the full block+inline set we whitelist below.
+            $config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
+            // Block `javascript:`, `data:`, etc. by whitelisting only safe schemes.
+            // (There's no "URI.DisableJavaScript" directive — this is the canonical way.)
+            $config->set('URI.AllowedSchemes', [
+                'http' => true,
+                'https' => true,
+                'mailto' => true,
+                'tel' => true,
+            ]);
             $config->set('Attr.EnableID', false);
             $config->set('HTML.Allowed', implode(',', [
                 // blok
                 'p', 'br', 'hr', 'blockquote', 'pre', 'code', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                // inline
-                'strong', 'b', 'em', 'i', 'u', 'span', 'a[href|title|rel|target]', 'small', 'sub', 'sup', 'mark',
+                // inline — 'mark' omitted: HTML5-only, HTMLPurifier targets XHTML 1.0
+                'strong', 'b', 'em', 'i', 'u', 'span', 'a[href|title|rel|target]', 'small', 'sub', 'sup',
                 // media
                 'img[src|alt|title|width|height]',
                 // table
                 'table', 'thead', 'tbody', 'tr', 'th', 'td',
             ]));
             $config->set('AutoFormat.RemoveEmpty', true);
-            $config->set('HTML.SafeImg', true);
-            $config->set('URI.SafeIframeRegexp', null); // iframes kapalı
+            // Iframes are not in HTML.Allowed above, so no URI.SafeIframeRegexp needed.
+            // img tags are whitelisted via HTML.Allowed; Core.RemoveInvalidImg defaults to
+            // true and handles broken tags.
 
             $purifier = new HTMLPurifier($config);
             $clean = $purifier->purify($html);
