@@ -1,0 +1,180 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Auth;
+
+use App\Models\User;
+use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
+use Tests\TestCase;
+
+/**
+ * End-to-end HTTP coverage for the newly wired auth endpoints:
+ *   POST /api/v1/auth/register
+ *   POST /api/v1/auth/forgot-password
+ *   POST /api/v1/auth/reset-password
+ *   GET  /api/v1/auth/me
+ *   POST /api/v1/auth/logout
+ *
+ * Each test goes through the real router + middleware + FormRequest stack,
+ * so we're covering the whole path — not just the rule arrays.
+ */
+final class AuthEndpointsTest extends TestCase
+{
+    use RefreshDatabase;
+
+    // --- register -----------------------------------------------------------
+
+    public function test_register_rejects_weak_password(): void
+    {
+        $response = $this->postJson('/api/v1/auth/register', [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['password']);
+        $this->assertDatabaseMissing('users', ['email' => 'jane@example.com']);
+    }
+
+    public function test_register_accepts_strong_password_and_returns_token(): void
+    {
+        $response = $this->postJson('/api/v1/auth/register', [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'password' => 'CorrectHorse-Battery!9Staple',
+            'password_confirmation' => 'CorrectHorse-Battery!9Staple',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('status', 'success');
+        $response->assertJsonStructure(['data' => ['token']]);
+
+        $this->assertDatabaseHas('users', ['email' => 'jane@example.com']);
+
+        $user = User::where('email', 'jane@example.com')->firstOrFail();
+        $this->assertNotSame('CorrectHorse-Battery!9Staple', $user->password);
+        $this->assertTrue(Hash::check('CorrectHorse-Battery!9Staple', $user->password));
+    }
+
+    public function test_register_rejects_duplicate_email(): void
+    {
+        User::factory()->create(['email' => 'taken@example.com']);
+
+        $response = $this->postJson('/api/v1/auth/register', [
+            'name' => 'Jane Doe',
+            'email' => 'taken@example.com',
+            'password' => 'CorrectHorse-Battery!9Staple',
+            'password_confirmation' => 'CorrectHorse-Battery!9Staple',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['email']);
+    }
+
+    // --- forgot-password ----------------------------------------------------
+
+    public function test_forgot_password_requires_valid_email(): void
+    {
+        $response = $this->postJson('/api/v1/auth/forgot-password', [
+            'email' => 'not-an-email',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['email']);
+    }
+
+    public function test_forgot_password_for_known_email_dispatches_reset(): void
+    {
+        Notification::fake();
+        User::factory()->create(['email' => 'known@example.com']);
+
+        $response = $this->postJson('/api/v1/auth/forgot-password', [
+            'email' => 'known@example.com',
+        ]);
+
+        $response->assertOk();
+    }
+
+    // --- reset-password -----------------------------------------------------
+
+    public function test_reset_password_rejects_weak_password(): void
+    {
+        $user = User::factory()->create(['email' => 'reset@example.com']);
+        $token = $this->passwordBroker()->createToken($user);
+
+        $response = $this->postJson('/api/v1/auth/reset-password', [
+            'token' => $token,
+            'email' => 'reset@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['password']);
+    }
+
+    public function test_reset_password_succeeds_with_strong_password_and_revokes_tokens(): void
+    {
+        $user = User::factory()->create(['email' => 'reset@example.com']);
+        // Seed an active API token — it must be revoked after reset.
+        $user->createToken('api');
+        $this->assertSame(1, $user->tokens()->count());
+
+        $token = $this->passwordBroker()->createToken($user);
+
+        $response = $this->postJson('/api/v1/auth/reset-password', [
+            'token' => $token,
+            'email' => 'reset@example.com',
+            'password' => 'CorrectHorse-Battery!9Staple',
+            'password_confirmation' => 'CorrectHorse-Battery!9Staple',
+        ]);
+
+        $response->assertOk();
+        $this->assertTrue(Hash::check('CorrectHorse-Battery!9Staple', $user->fresh()?->password));
+        $this->assertSame(0, $user->tokens()->count(), 'Active tokens should be revoked on password reset.');
+    }
+
+    // --- me / logout --------------------------------------------------------
+
+    public function test_me_requires_authentication(): void
+    {
+        $this->getJson('/api/v1/auth/me')->assertStatus(401);
+    }
+
+    public function test_me_returns_current_user_when_authenticated(): void
+    {
+        $user = User::factory()->create(['email' => 'me@example.com']);
+
+        $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/auth/me')
+            ->assertOk()
+            ->assertJsonPath('data.email', 'me@example.com');
+    }
+
+    private function passwordBroker(): PasswordBroker
+    {
+        $broker = Password::broker();
+        $this->assertInstanceOf(PasswordBroker::class, $broker);
+
+        return $broker;
+    }
+
+    public function test_logout_revokes_current_token(): void
+    {
+        $user = User::factory()->create();
+        $plain = $user->createToken('api')->plainTextToken;
+
+        $this->withHeader('Authorization', 'Bearer ' . $plain)
+            ->postJson('/api/v1/auth/logout')
+            ->assertOk();
+
+        $this->assertSame(0, $user->tokens()->count());
+    }
+}

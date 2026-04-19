@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Admin\UserAdminController;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuditController;
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\ExportController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Api\V1\MediaController;
 use App\Http\Controllers\Api\V1\MenuController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\PageController;
+use App\Http\Controllers\Api\V1\PasswordResetController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\TagController;
@@ -45,17 +47,27 @@ Route::prefix('v1')->group(function () {
         ->middleware(['throttle:comment-create', 'comment.notbanned'])
         ->name('comments.store');
 
-    // Auth + 2FA
+    // Auth (public)
+    Route::post('auth/register', [AuthController::class, 'register'])
+        ->middleware('throttle:register')->name('auth.register');
     Route::post('auth/login', [TwoFactorController::class, 'verifyLogin'])
         ->middleware('throttle:login')->name('auth.login');
     Route::post('auth/2fa/verify', [TwoFactorController::class, 'verifyCode'])
         ->middleware('throttle:twofactor')->name('auth.2fa.verify');
+    Route::post('auth/forgot-password', [PasswordResetController::class, 'sendLink'])
+        ->middleware('throttle:password-reset')->name('auth.password.forgot');
+    Route::post('auth/reset-password', [PasswordResetController::class, 'reset'])
+        ->middleware('throttle:password-reset')->name('auth.password.reset');
 
     // Search
     Route::get('search', SearchController::class)->middleware('throttle:search')->name('search');
 
     // Authenticated
     Route::middleware('auth:sanctum')->group(function () {
+        // Auth (authenticated)
+        Route::get('auth/me', [AuthController::class, 'me'])->name('auth.me');
+        Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
         // Notifications
         Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
         Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');

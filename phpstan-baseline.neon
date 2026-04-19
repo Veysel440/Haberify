@@ -37,12 +37,6 @@ parameters:
 			path: app/Console/Commands/ScoutSyncArticles.php
 
 		-
-			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Console/Commands/SendWeeklyDigest.php
-
-		-
 			message: '#^Method App\\Contracts\\ArticleRepositoryInterface\:\:paginate\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -91,12 +85,6 @@ parameters:
 			path: app/Exports/ArticlesExport.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\ArticleAdminController\:\:bulk\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -127,12 +115,6 @@ parameters:
 			path: app/Http/Controllers/Api/V1/Admin/ArticleAdminController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\CommentAdminController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/CommentAdminController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\CommentAdminController\:\:ban\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -148,18 +130,6 @@ parameters:
 			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:authorize\(\)\.$#'
 			identifier: method.notFound
 			count: 15
-			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\TrashController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
-
-		-
-			message: '#^Function per_page not found\.$#'
-			identifier: function.notFound
-			count: 5
 			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
 
 		-
@@ -253,30 +223,6 @@ parameters:
 			path: app/Http/Controllers/Api/V1/Admin/TrashController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\Admin\\UserAdminController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:getRoleNames\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:syncRoles\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:role\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\Admin\\UserAdminController\:\:assignRole\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -287,18 +233,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
-			message: '#^Unable to resolve the template type TWhenReturnType in call to method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:when\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: app/Http/Controllers/Api/V1/Admin/UserAdminController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/AnalyticsController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AnalyticsController\:\:categoryShare\(\) has no return type specified\.$#'
@@ -323,18 +257,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/AnalyticsController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/ArticleController.php
-
-		-
-			message: '#^Function per_page not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/ArticleController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ArticleController\:\:destroy\(\) has no return type specified\.$#'
@@ -373,46 +295,10 @@ parameters:
 			path: app/Http/Controllers/Api/V1/ArticleController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\AuditController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuditController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuditController\:\:index\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/AuditController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:login\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:logout\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:me\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\AuthController\:\:register\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/CategoryController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\CategoryController\:\:destroy\(\) has no return type specified\.$#'
@@ -475,34 +361,16 @@ parameters:
 			path: app/Http/Controllers/Api/V1/CommentController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ExportController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/ExportController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ExportController\:\:articlesCsv\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/ExportController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\ImportController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/ImportController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\ImportController\:\:categories\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/ImportController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\MediaController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/MediaController.php
 
 		-
 			message: '#^Call to an undefined static method App\\Jobs\\ImageOptimizeJob\:\:dispatch\(\)\.$#'
@@ -535,12 +403,6 @@ parameters:
 			path: app/Http/Controllers/Api/V1/MenuController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/NotificationController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\NotificationController\:\:index\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -557,12 +419,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/NotificationController.php
-
-		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\PageController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/PageController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PageController\:\:destroy\(\) has no return type specified\.$#'
@@ -589,28 +445,10 @@ parameters:
 			path: app/Http/Controllers/Api/V1/PageController.php
 
 		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PasswordResetController\:\:reset\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/PasswordResetController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\PasswordResetController\:\:sendLink\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/PasswordResetController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SearchController\:\:__invoke\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/SearchController.php
-
-		-
-			message: '#^Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken\:\:\$tokenable_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/SessionController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\SessionController\:\:destroy\(\) has no return type specified\.$#'
@@ -649,12 +487,6 @@ parameters:
 			path: app/Http/Controllers/Api/V1/SettingController.php
 
 		-
-			message: '#^Call to an undefined method App\\Http\\Controllers\\Api\\V1\\TagController\:\:middleware\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/TagController.php
-
-		-
 			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TagController\:\:destroy\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -683,48 +515,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: app/Http/Controllers/Api/V1/TagController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:hasRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\User\>\:\:hasRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:disable\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:enable\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:qrcode\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:verifyCode\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\Api\\V1\\TwoFactorController\:\:verifyLogin\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Http/Controllers/Api/V1/TwoFactorController.php
 
 		-
 			message: '#^Method App\\Http\\Controllers\\SitemapController\:\:__invoke\(\) has no return type specified\.$#'
@@ -899,12 +689,6 @@ parameters:
 			identifier: missingType.parameter
 			count: 1
 			path: app/Http/Middleware/TrackArticleView.php
-
-		-
-			message: '#^Function ref_host not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: app/Http/Middleware/TrackReferrer.php
 
 		-
 			message: '#^Method App\\Http\\Middleware\\TrackReferrer\:\:handle\(\) has no return type specified\.$#'
@@ -1195,18 +979,6 @@ parameters:
 			path: app/Jobs/SendWeeklyDigest.php
 
 		-
-			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Listeners/NotifyEditorsNewComment.php
-
-		-
-			message: '#^Call to an undefined static method App\\Models\\User\:\:role\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Listeners/SendArticlePublishedNotifications.php
-
-		-
 			message: '#^Method App\\Mail\\WeeklyDigestMail\:\:build\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -1453,18 +1225,6 @@ parameters:
 			path: app/Models/Tag.php
 
 		-
-			message: '#^PHPDoc tag @use has invalid type Database\\Factories\\UserFactory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Type Database\\Factories\\UserFactory in generic type Illuminate\\Database\\Eloquent\\Factories\\HasFactory\<Database\\Factories\\UserFactory\> in PHPDoc tag @use is not subtype of template type TFactory of Illuminate\\Database\\Eloquent\\Factories\\Factory of trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory\.$#'
-			identifier: generics.notSubtype
-			count: 1
-			path: app/Models/User.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$author\.$#'
 			identifier: property.notFound
 			count: 1
@@ -1517,18 +1277,6 @@ parameters:
 			identifier: missingType.parameter
 			count: 1
 			path: app/Notifications/WeeklyDigest.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:hasAnyRole\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Policies/ArticlePolicy.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:hasRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Policies/ArticlePolicy.php
 
 		-
 			message: '#^Method App\\Policies\\ArticlePolicy\:\:delete\(\) has parameter \$article with no type specified\.$#'
@@ -1723,18 +1471,6 @@ parameters:
 			path: app/Policies/UserPolicy.php
 
 		-
-			message: '#^App\\Providers\\RouteServiceProvider\:\:boot\(\) calls parent\:\:boot\(\) but App\\Providers\\RouteServiceProvider does not extend any class\.$#'
-			identifier: class.noParent
-			count: 1
-			path: app/Providers/RouteServiceProvider.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 3
-			path: app/Providers/RouteServiceProvider.php
-
-		-
 			message: '#^Method App\\Repositories\\EloquentArticleRepository\:\:paginate\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -1792,12 +1528,6 @@ parameters:
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$tags\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Services/ArticleService.php
-
-		-
-			message: '#^Function estimate_minutes not found\.$#'
-			identifier: function.notFound
-			count: 2
 			path: app/Services/ArticleService.php
 
 		-
@@ -1927,42 +1657,6 @@ parameters:
 			path: app/Support/HtmlSanitizer.php
 
 		-
-			message: '#^Function App\\Support\\err\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Support/helpers.php
-
-		-
-			message: '#^Function App\\Support\\err\(\) has parameter \$errors with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: app/Support/helpers.php
-
-		-
-			message: '#^Function App\\Support\\ok\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: app/Support/helpers.php
-
-		-
-			message: '#^Function App\\Support\\ok\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: app/Support/helpers.php
-
-		-
-			message: '#^Function App\\Support\\page_payload\(\) has parameter \$paginator with generic class Illuminate\\Pagination\\LengthAwarePaginator but does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Support/helpers.php
-
-		-
-			message: '#^Call to an undefined static method App\\Models\\Category\:\:factory\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: database/factories/ArticleFactory.php
-
-		-
 			message: '#^Class Database\\Factories\\ArticleFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -1993,50 +1687,20 @@ parameters:
 			path: database/factories/TagFactory.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:assignRole\(\)\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Api/ArticleApiTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\TestCase\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: database/seeders/RolesAndPermissionsSeeder.php
-
-		-
-			message: '#^Call to static method firstOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Permission\.$#'
-			identifier: class.notFound
-			count: 1
-			path: database/seeders/RolesAndPermissionsSeeder.php
-
-		-
-			message: '#^Call to static method firstOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Role\.$#'
-			identifier: class.notFound
-			count: 1
-			path: database/seeders/RolesAndPermissionsSeeder.php
-
-		-
-			message: '#^Class Spatie\\Permission\\PermissionRegistrar not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: database/seeders/RolesAndPermissionsSeeder.php
-
-		-
-			message: '#^Call to an undefined static method App\\Models\\Category\:\:factory\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
 			path: tests/Feature/Api/ArticleApiTest.php
 
 		-
-			message: '#^Function expect not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Feature/Api/ArticleApiTest.php
-
-		-
-			message: '#^Function it not found\.$#'
-			identifier: function.notFound
-			count: 2
-			path: tests/Feature/Api/ArticleApiTest.php
-
-		-
-			message: '#^Function userWithPermissions not found\.$#'
-			identifier: function.notFound
+			message: '#^Call to an undefined method PHPUnit\\Framework\\TestCase\:\:getJson\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: tests/Feature/Api/ArticleApiTest.php
 
@@ -2053,32 +1717,14 @@ parameters:
 			path: tests/Feature/Api/ArticleApiTest.php
 
 		-
-			message: '#^Undefined variable\: \$this$#'
-			identifier: variable.undefined
-			count: 2
-			path: tests/Feature/Api/ArticleApiTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: tests/Feature/Api/CommentApiTest.php
 
 		-
-			message: '#^Function expect not found\.$#'
-			identifier: function.notFound
-			count: 2
-			path: tests/Feature/Api/CommentApiTest.php
-
-		-
-			message: '#^Function it not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Feature/Api/CommentApiTest.php
-
-		-
-			message: '#^Undefined variable\: \$this$#'
-			identifier: variable.undefined
+			message: '#^Call to an undefined method PHPUnit\\Framework\\TestCase\:\:postJson\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: tests/Feature/Api/CommentApiTest.php
 
@@ -2089,34 +1735,10 @@ parameters:
 			path: tests/Feature/Policies/ArticlePolicyTest.php
 
 		-
-			message: '#^Function it not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Feature/Policies/ArticlePolicyTest.php
-
-		-
-			message: '#^Function userWithPermissions not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Feature/Policies/ArticlePolicyTest.php
-
-		-
-			message: '#^Undefined variable\: \$this$#'
-			identifier: variable.undefined
+			message: '#^Call to an undefined method PHPUnit\\Framework\\TestCase\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: tests/Feature/Policies/ArticlePolicyTest.php
-
-		-
-			message: '#^Call to static method findOrCreate\(\) on an unknown class Spatie\\Permission\\Models\\Permission\.$#'
-			identifier: class.notFound
-			count: 1
-			path: tests/Pest.php
-
-		-
-			message: '#^Function uses not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Pest.php
 
 		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
@@ -2125,13 +1747,7 @@ parameters:
 			path: tests/Unit/ExampleTest.php
 
 		-
-			message: '#^Function expect not found\.$#'
-			identifier: function.notFound
-			count: 1
-			path: tests/Unit/HtmlSanitizerTest.php
-
-		-
-			message: '#^Function it not found\.$#'
-			identifier: function.notFound
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
+			identifier: property.notFound
 			count: 1
 			path: tests/Unit/HtmlSanitizerTest.php

@@ -33,7 +33,10 @@ return [
             'AutoFormat.RemoveEmpty' => true,
         ],
         'news' => [
-            'HTML.Doctype' => 'HTML5',
+            // HTMLPurifier has no 'HTML5' doctype literal — it targets XHTML 1.0.
+            // HTML5-only tags (figure, section, nav, ...) come in via the
+            // `custom_definition` block below.
+            'HTML.Doctype' => 'XHTML 1.0 Transitional',
             'HTML.Allowed' => implode(',', [
                 'p', 'br', 'hr', 'blockquote', 'pre', 'code',
                 'ul', 'ol', 'li',
@@ -46,10 +49,15 @@ return [
             ]),
             'Attr.AllowedFrameTargets' => ['_blank'],
             'Attr.EnableID' => false,
-            'URI.DisableJavaScript' => true,
-            'URI.SafeIframeRegexp' => null,
+            // Block `javascript:`, `data:`, etc. by whitelisting only safe schemes
+            // (there is no URI.DisableJavaScript directive).
+            'URI.AllowedSchemes' => [
+                'http' => true,
+                'https' => true,
+                'mailto' => true,
+                'tel' => true,
+            ],
             'AutoFormat.RemoveEmpty' => true,
-            'HTML.SafeImg' => true,
         ],
         'test' => [
             'Attr.EnableID' => 'true',

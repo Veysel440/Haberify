@@ -2,26 +2,44 @@
 
 declare(strict_types=1);
 
-namespace App\Support;
+/**
+ * Global helper functions (autoloaded via composer.json -> autoload.files).
+ *
+ * These are intentionally in the GLOBAL namespace so callers across the app
+ * can write `per_page($request)` without a `use function` import. The
+ * `function_exists` guards make re-including the file idempotent.
+ */
 
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 if (! function_exists('ok')) {
-    function ok($data = null, string $message = 'ok', int $code = 200)
+    /**
+     * @param mixed $data
+     */
+    function ok($data = null, string $message = 'ok', int $code = 200): \Illuminate\Http\JsonResponse
     {
         return response()->json(['status' => 'success', 'message' => $message, 'data' => $data], $code);
     }
 }
 
 if (! function_exists('err')) {
-    function err(string $message = 'error', int $code = 400, $errors = null)
+    /**
+     * @param mixed $errors
+     */
+    function err(string $message = 'error', int $code = 400, $errors = null): \Illuminate\Http\JsonResponse
     {
         return response()->json(['status' => 'error', 'message' => $message, 'errors' => $errors], $code);
     }
 }
 
 if (! function_exists('page_payload')) {
+    /**
+     * @param LengthAwarePaginator<int, mixed> $paginator
+     *
+     * @return array<string, mixed>
+     */
     function page_payload(LengthAwarePaginator $paginator): array
     {
         return [
@@ -57,7 +75,7 @@ if (! function_exists('estimate_minutes')) {
 }
 
 if (! function_exists('per_page')) {
-    function per_page(\Illuminate\Http\Request $r, int $def = 15, int $max = 100): int
+    function per_page(Request $r, int $def = 15, int $max = 100): int
     {
         $p = (int) $r->query('per_page', $def);
 
@@ -76,7 +94,7 @@ if (! function_exists('ref_host')) {
         if (! $host) {
             return null;
         }
-        $app = $appHost ?: parse_url(config('app.url'), PHP_URL_HOST);
+        $app = $appHost ?: parse_url((string) config('app.url'), PHP_URL_HOST);
 
         return ($host === $app) ? 'direct' : $host;
     }

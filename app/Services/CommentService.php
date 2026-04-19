@@ -38,9 +38,12 @@ class CommentService
 
             return $c;
         } catch (Throwable $e) {
-            Log::error('comment.create.fail');
+            Log::error('comment.create.fail', [
+                'exception' => $e::class,
+                'message' => $e->getMessage(),
+            ]);
 
-            throw new ApiException('Yorum kaydedilemedi', 500);
+            throw new ApiException('Yorum kaydedilemedi', 500, previous: $e);
         }
     }
 
