@@ -4,38 +4,39 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\Api\V1\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Api\V1\Auth\ResetPasswordRequest;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
 {
-    public function sendLink(Request $r)
+    public function sendLink(ForgotPasswordRequest $request): JsonResponse
     {
-        $r->validate(['email' => 'required|email']);
-        $status = Password::sendResetLink($r->only('email'));
+        $status = Password::sendResetLink($request->only('email'));
 
         return $status === Password::RESET_LINK_SENT
             ? response()->json(['message' => __($status)])
             : response()->json(['message' => __($status)], 422);
     }
 
-    public function reset(Request $r)
+    public function reset(ResetPasswordRequest $request): JsonResponse
     {
-        $r->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ]);
-
         $status = Password::reset(
-            $r->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->forceFill(['password' => bcrypt($password), 'remember_token' => Str::random(60)])->save();
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
                 event(new PasswordReset($user));
-                // Tüm tokenları iptal et
+
+                // Revoke every active session so a stolen pre-reset token dies here.
                 $user->tokens()->delete();
             },
         );
