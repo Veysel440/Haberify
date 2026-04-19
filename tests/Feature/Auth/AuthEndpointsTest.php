@@ -52,8 +52,8 @@ final class AuthEndpointsTest extends TestCase
             'password_confirmation' => 'CorrectHorse-Battery!9Staple',
         ]);
 
-        $response->assertOk();
-        $response->assertJsonPath('status', 'success');
+        $response->assertCreated();
+        $response->assertJsonPath('success', true);
         $response->assertJsonStructure(['data' => ['token']]);
 
         $this->assertDatabaseHas('users', ['email' => 'jane@example.com']);
@@ -155,6 +155,7 @@ final class AuthEndpointsTest extends TestCase
         $this->actingAs($user, 'sanctum')
             ->getJson('/api/v1/auth/me')
             ->assertOk()
+            ->assertJsonPath('success', true)
             ->assertJsonPath('data.email', 'me@example.com');
     }
 
@@ -173,7 +174,7 @@ final class AuthEndpointsTest extends TestCase
 
         $this->withHeader('Authorization', 'Bearer ' . $plain)
             ->postJson('/api/v1/auth/logout')
-            ->assertOk();
+            ->assertNoContent();
 
         $this->assertSame(0, $user->tokens()->count());
     }
