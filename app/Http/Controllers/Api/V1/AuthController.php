@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\RegisterRequest;
+use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use App\Services\Auth\SanctumTokenIssuer;
@@ -46,7 +47,10 @@ class AuthController extends Controller
 
     public function me(Request $request): ApiResponse
     {
-        return ApiResponse::ok($request->user());
+        /** @var User $user */
+        $user = $request->user();
+
+        return ApiResponse::ok((new UserResource($user))->toArray($request));
     }
 
     public function logout(Request $request): JsonResponse
