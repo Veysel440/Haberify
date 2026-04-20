@@ -8,15 +8,26 @@ use App\Support\Traits\SanitizesHtml;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Comment extends Model
 {
     /** @use HasFactory<\Database\Factories\CommentFactory> */
-    use HasFactory, SanitizesHtml, SoftDeletes;
+    use HasFactory, LogsActivity, SanitizesHtml, SoftDeletes;
 
     protected $fillable = ['article_id', 'user_id', 'guest_name', 'body', 'status', 'ip', 'ua'];
 
     protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('comment')
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function article()
     {
