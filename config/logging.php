@@ -54,9 +54,23 @@ return [
 
     'channels' => [
 
+        /*
+         * Application log stack.
+         *
+         * Kanallar `.env`'deki `LOG_STACK` ile virgülle ayrılmış olarak tanımlanır.
+         * Örnek üretim değeri: `LOG_STACK=daily,sentry` — rotated dosya logları
+         * + Sentry'ye kritik uyarıların aggregation'ı.
+         *
+         * `audit` ve `security` **bilinçli olarak bu stack'in dışındadır**:
+         * debug gürültüsüyle karışmaları istenmez; ilgili kod yolları doğrudan
+         * `Log::channel('audit')->...` / `Log::channel('security')->...` ile yazar.
+         */
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
+            'channels' => array_values(array_filter(array_map(
+                'trim',
+                explode(',', (string) env('LOG_STACK', 'single')),
+            ))),
             'ignore_exceptions' => false,
         ],
 
@@ -127,6 +141,56 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        /*
+         * Audit — her türlü domain event iz bırakma için (spatie/activitylog
+         * zaten veri tabanında kalıcı iz tutar; bu kanal complementary bir
+         * düz-dosya backup'tır: DB çökerse, SIEM'e aktarma yapılırken veya
+         * denetim talep edildiğinde hızlı grep için).
+         *
+         * 730 gün retention = projenin 2 yıllık uyumluluk penceresiyle
+         * hizalıdır. `LOG_AUDIT_DAYS` ile ortam bazlı override edilebilir.
+         */
+        'audit' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/audit.log'),
+            'level' => env('LOG_AUDIT_LEVEL', 'info'),
+            'days' => (int) env('LOG_AUDIT_DAYS', 730),
+            'replace_placeholders' => true,
+        ],
+
+        /*
+         * Security — 2FA başarısızlıkları, şifre sıfırlama, hesap kilitleme,
+         * yetkilendirme ihlali denemeleri gibi kritik güvenlik olayları için.
+         *
+         * Bu kanala yazan her satır bir olay-müfettişi tarafından
+         * sorgulanabilir varsayılır; mümkün olduğunca structured context ile
+         * yazın (user_id, ip, route, reason). Varsayılan retention 365 gün;
+         * `LOG_SECURITY_DAYS` ile override.
+         */
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => env('LOG_SECURITY_LEVEL', 'notice'),
+            'days' => (int) env('LOG_SECURITY_DAYS', 365),
+            'replace_placeholders' => true,
+        ],
+
+        /*
+         * Sentry — `sentry/sentry-laravel` paketi tarafından sağlanan driver.
+         * `LOG_STACK=daily,sentry` gibi bir ayar bu kanalı application stack'ine
+         * dahil eder; bunun dışında `Log::channel('sentry')->error(...)` ile
+         * doğrudan da yazılabilir.
+         *
+         * `LOG_LEVEL_SENTRY`'yi `error` veya `warning` seviyesinde tutmak
+         * önerilir — `debug`/`info` Sentry kotasını hızla tüketir.
+         */
+        'sentry' => [
+            'driver' => 'sentry',
+            'level' => env('LOG_LEVEL_SENTRY', 'error'),
+            'bubble' => true,
+            'report_exceptions' => true,
         ],
 
     ],
